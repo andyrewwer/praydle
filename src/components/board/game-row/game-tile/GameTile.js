@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './GameTile.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class GameTile extends Component {
   constructor(props) {
@@ -7,9 +8,14 @@ class GameTile extends Component {
     this.render.bind(this);
   }
 
+// TODO 1 - RIGHT / WRONG
+//      2 - animation
+
   render = () => {
     return (
-      <div className="tile">a
+      <div className="tile">
+        {!!this.props.icon &&
+          <FontAwesomeIcon icon={this.props.icon.name} className={'icon ' + this.props.icon.color}/>}
       </div>
     )}
   }
