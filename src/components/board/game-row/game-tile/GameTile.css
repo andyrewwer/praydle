@@ -1,0 +1,15 @@
+.tile {
+  border: 2px solid grey ;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: bold;
+  vertical-align: middle;
+  box-sizing: border-box;
+  color: #1a1a1b;
+  text-transform: uppercase;
+  user-select: none;
+}

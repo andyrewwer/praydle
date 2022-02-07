@@ -1,0 +1,15 @@
+.board {
+  /* width: 323px;
+  height: 384px; */
+  display: grid;
+  grid-template-rows: repeat(5, 60px);
+  grid-gap: 8px;
+}
+
+.board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
