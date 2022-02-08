@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './HeaderSection.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {HEADER_ICONS} from '../../utils/Enums.js'
 
 class HeaderSection extends Component {
   constructor(props) {
@@ -7,15 +9,14 @@ class HeaderSection extends Component {
     this.render.bind(this);
   }
 
+// TODO implement buttons lol
   render = () => {
     return (
         <div className="header-container">
-          <div className="hint"> hint icon</div>
-          <div className="title"> THREE MINUTE MYSTERY</div>
-          <div className="statistics"> statistics</div>
-          <div className="settings"> settings cog</div>
-          <div className="break"></div>
-          <div className="divider"></div>
+          <div className="hint"> <FontAwesomeIcon icon={HEADER_ICONS.HINT.iconName} className={'header-icon'}/></div>
+          <div className="title"> 3 MINUTE MYSTERY </div>
+          <div className="statistics"> <FontAwesomeIcon icon={HEADER_ICONS.STATISTICS.iconName} className={'header-icon'}/></div>
+          <div className="settings"> <FontAwesomeIcon icon={HEADER_ICONS.SETTINGS.iconName} className={'header-icon'}/></div>
         </div>
     )}
 }
