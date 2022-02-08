@@ -13,7 +13,7 @@ class GameTile extends Component {
 
   render = () => {
     return (
-      <div className="tile">
+      <div className={'tile ' + this.props.tileClass}>
         {!!this.props.icon &&
           <FontAwesomeIcon icon={this.props.icon.iconName} className={'icon ' + this.props.icon.color}/>}
       </div>

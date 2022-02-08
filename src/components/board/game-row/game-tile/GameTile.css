@@ -10,6 +10,21 @@
   font-size: 2.5rem;
 }
 
+.absent {
+  background-color: var(--color-absent);
+  border: 0;
+}
+
+.present {
+  background-color: var(--color-present);
+  border: 0;
+}
+
+.correct {
+  background-color: var(--color-correct);
+  border: 0;
+}
+
 .red {
   color: var(--red-icon);
 }

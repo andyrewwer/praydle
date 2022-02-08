@@ -1,12 +1,18 @@
 :root {
   --red-icon: #ae2012;
   --orange-icon: #ca6702;
-  --beige-icon: #e9d8a6;
+  --beige-icon: #faeee7;
   --green-icon: #94d2bd;
   --blue-icon: #005f73;
   --grey-icon: grey;
   --keyboard-background: lightgrey;
   --game-max-width: 500px;
+  --color-present: #AB8D33;
+  --color-correct: #096E0B;
+  --color-absent: #941C18;
+  /* --color-present: #F2A359;
+  --color-correct: #91C483;
+  --color-absent: #21201C; */
 }
 
 .App {
