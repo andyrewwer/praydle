@@ -6,7 +6,6 @@ class GameRow extends Component {
   constructor(props) {
     super(props);
     this.render.bind(this);
-    console.log(this.props)
   }
 
   render = () => {

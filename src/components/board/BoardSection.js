@@ -13,11 +13,11 @@ class BoardSection extends Component {
     return (
       <div className="board-container">
         <div className="board">
-          <GameRow icons={[BUILDING_ICONS.THREE, BUILDING_ICONS.ONE, BUILDING_ICONS.FIVE]}/>
-          <GameRow icons={[BUILDING_ICONS.TWO, BUILDING_ICONS.FOUR]}/>
-          <GameRow icons={[WEAPON_ICONS.ONE, WEAPON_ICONS.FIVE]}/>
-          <GameRow icons={[WEAPON_ICONS.TWO, WEAPON_ICONS.FOUR, WEAPON_ICONS.THREE]}/>
-          <GameRow icons={[PEOPLE_ICONS.ONE, PEOPLE_ICONS.FIVE]}/>
+          <GameRow icons={this.props.icons[0]}/>
+          <GameRow icons={this.props.icons[1]}/>
+          <GameRow icons={this.props.icons[2]}/>
+          <GameRow icons={this.props.icons[3]}/>
+          <GameRow icons={this.props.icons[4]}/>
         </div>
       </div>
     )}

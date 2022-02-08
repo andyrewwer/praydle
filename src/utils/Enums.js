@@ -1,22 +1,22 @@
 export const BUILDING_ICONS = {
   ONE: {
-    name: 'building',
+    iconName: 'building',
     color: 'red'
   },
   TWO: {
-    name: 'campground',
+    iconName: 'campground',
     color: 'orange'
   },
   THREE: {
-    name: 'igloo',
+    iconName: 'igloo',
     color: 'beige'
   },
   FOUR: {
-    name: 'home',
+    iconName: 'home',
     color: 'green'
   },
   FIVE: {
-    name: 'store',
+    iconName: 'store',
     color: 'blue'
   },
 }
@@ -24,46 +24,57 @@ export const BUILDING_ICONS = {
 
 export const WEAPON_ICONS = {
   ONE: {
-    name: 'bacterium',
+    iconName: 'bacterium',
     color: 'red'
   },
   TWO: {
-    name: 'drum',
+    iconName: 'drum',
     color: 'orange'
   },
   THREE: {
-    name: 'guitar',
+    iconName: 'guitar',
     color: 'beige'
   },
   FOUR: {
-    name: 'dragon',
+    iconName: 'dragon',
     color: 'green'
   },
   FIVE: {
-    name: 'bomb',
+    iconName: 'bomb',
     color: 'blue'
   },
 }
 
 export const PEOPLE_ICONS = {
   ONE: {
-    name: 'user-ninja',
+    iconName: 'user-ninja',
     color: 'red'
   },
   TWO: {
-    name: 'user-md',
+    iconName: 'user-md',
     color: 'orange'
   },
   THREE: {
-    name: 'user-secret',
+    iconName: 'user-secret',
     color: 'beige'
   },
   FOUR: {
-    name: 'user-astronaut',
+    iconName: 'user-astronaut',
     color: 'green'
   },
   FIVE: {
-    name: 'user-graduate',
+    iconName: 'user-graduate',
     color: 'blue'
   },
+}
+
+export const CONTROL_ICONS = {
+  BACKSPACE: {
+    iconName: 'backspace',
+    color: 'grey'
+  },
+  ENTER: {
+    iconName: 'check-circle',
+    color: 'grey'
+  }
 }

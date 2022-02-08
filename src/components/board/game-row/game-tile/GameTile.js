@@ -15,7 +15,7 @@ class GameTile extends Component {
     return (
       <div className="tile">
         {!!this.props.icon &&
-          <FontAwesomeIcon icon={this.props.icon.name} className={'icon ' + this.props.icon.color}/>}
+          <FontAwesomeIcon icon={this.props.icon.iconName} className={'icon ' + this.props.icon.color}/>}
       </div>
     )}
   }
