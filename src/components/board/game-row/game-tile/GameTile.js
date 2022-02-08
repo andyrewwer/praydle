@@ -8,12 +8,9 @@ class GameTile extends Component {
     this.render.bind(this);
   }
 
-// TODO 1 - RIGHT / WRONG
-//      2 - animation
-
   render = () => {
     return (
-      <div className={'tile ' + this.props.tileClass}>
+      <div className={'tile ' + this.props.tileClass} data-state={this.props.icon.status} data-animation={this.props.icon.animation}>
         {!!this.props.icon &&
           <FontAwesomeIcon icon={this.props.icon.iconName} className={'icon ' + this.props.icon.color}/>}
       </div>

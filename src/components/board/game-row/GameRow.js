@@ -11,9 +11,9 @@ class GameRow extends Component {
   render = () => {
     return (
       <div className="game-row">
-        <GameTile icon={!!this.props.icons && this.props.icons.length > 0 && this.props.icons[0]} tileClass={!!this.props.icons && this.props.icons.length > 0 && this.props.icons[0].status}/>
-        <GameTile icon={!!this.props.icons && this.props.icons.length > 1 && this.props.icons[1]} tileClass={!!this.props.icons && this.props.icons.length > 1 && this.props.icons[1].status}/>
-        <GameTile icon={!!this.props.icons && this.props.icons.length > 2 && this.props.icons[2]} tileClass={!!this.props.icons && this.props.icons.length > 2 && this.props.icons[2].status}/>
+        <GameTile icon={!!this.props.icons && this.props.icons.length > 0 && this.props.icons[0]}/>
+        <GameTile icon={!!this.props.icons && this.props.icons.length > 1 && this.props.icons[1]}/>
+        <GameTile icon={!!this.props.icons && this.props.icons.length > 2 && this.props.icons[2]}/>
       </div>
     )}
   }

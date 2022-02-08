@@ -21,7 +21,6 @@ export const BUILDING_ICONS = {
   },
 }
 
-
 export const WEAPON_ICONS = {
   ONE: {
     iconName: 'bacterium',

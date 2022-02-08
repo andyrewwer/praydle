@@ -24,60 +24,83 @@ class App extends Component {
   }
 
   answerIsRight(icon) {
-    let answer = [BUILDING_ICONS.THREE, WEAPON_ICONS.FOUR, PEOPLE_ICONS.FIVE];
+    let answer = [BUILDING_ICONS.THREE.iconName, WEAPON_ICONS.FOUR.iconName, PEOPLE_ICONS.FIVE.iconName];
     let colors = [answer[0].color, answer[1].color, answer[2].color];
-    if (answer.indexOf(icon) > -1) {
-      console.log('ANSWER IS THERE');
+    if (answer.indexOf(icon.iconName) > -1) {
       return 'correct';
     }
     if (colors.indexOf(icon.color) > -1) {
       // TODO check if the "RIGHT" answer is not implemented
-      console.log('COLOR IS THERE');
       return 'present';
     }
     return 'absent'
+  }
 
+  removeLastItem(_current_row) {
+    const list = this.state.icons;
+    list[_current_row] = list[_current_row].slice(0, -1);
+    this.setState({icons: list});
+  }
+
+  animateAndSetItem(list, row, i, _current_row) {
+    setTimeout(function() {
+      row[i].animation = 'flip-in';
+      list[_current_row] = row;
+      this.setState({icons: list});
+
+      setTimeout(function() {
+        row[i].animation = 'flip-out';
+        row[i].status = this.answerIsRight(row[i]);
+        list[_current_row] = row;
+        this.setState({icons: list});
+
+          setTimeout(function() {
+            row[i].animation = 'idle';
+            list[_current_row] = row;
+            this.setState({icons: list});
+            }.bind(this), 250);
+        }.bind(this), 250);
+    }.bind(this), 50+(50*i));
+  }
+
+  canAddNewRow() {
+    return this.state.icons[this.state.current_row].length === 3
   }
 
   render = () => {
     library.add(faBackspace, faCheckCircle);
-    // hard coded in utils/Enums.js
     library.add(faBuilding, faCampground, faStore, faHome, faIgloo);
     library.add(faBomb, faDrum, faBacterium, faDragon, faGuitar);
     library.add(faUserAstronaut, faUserGraduate, faUserMd, faUserNinja, faUserSecret);
+
     const keyPress = (icon) => {
+      const _current_row = this.state.current_row;
       if (icon.iconName === 'backspace') { // TODO ENUMify
-        const list = this.state.icons
-        list[this.state.current_row] = list[this.state.current_row].slice(0, -1)
-        this.setState({
-            icons: list
-          })
+        this.removeLastItem(_current_row);
         return;
       }
       if (icon.iconName === 'check-circle') { // todo prettiy iconName
-        // TODO implement some checking logic here
-        const list = this.state.icons;
-        const row = list[this.state.current_row]
-        for (let i = 0; i < row.length; i ++) {
-
-          // TODO
-          row[i] = new Icon(row[i].iconName, row[i].color, this.answerIsRight(row[i]));
+        if (this.canAddNewRow()) {
+          const list = this.state.icons;
+          const row = list[_current_row]
+          for (let i = 0; i < row.length; i ++) {
+            this.animateAndSetItem(list, row, i, _current_row);
+          }
+          this.setState({current_row: _current_row + 1})
+        } else {
+          // TODO animate NOT ADDING
         }
-        list[this.state.current_row] = row
-
-        this.setState({
-            icons: list,
-            current_row: this.state.current_row + 1
-          })
         return
       }
-      if (this.state.icons[this.state.current_row].length < 3) {
-        const list = this.state.icons
-        list[this.state.current_row] = list[this.state.current_row].concat(icon)
-        console.log(list)
-        this.setState({
-            icons: list
-          })
+      if (this.state.icons[_current_row].length < 3) {
+        const list = this.state.icons;
+        list[_current_row] = list[_current_row].concat(new Icon(icon.iconName, icon.color))
+        this.setState({icons: list});
+        setTimeout(function() {
+          list[_current_row].at(-1).animation = 'idle'
+          this.setState({icons: list});
+        }.bind(this), 100);
+
 
         return
       }

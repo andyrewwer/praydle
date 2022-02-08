@@ -1,5 +1,5 @@
 .tile {
-  border: 2px solid grey ;
+  border: 2px solid lightgrey;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -10,17 +10,17 @@
   font-size: 2.5rem;
 }
 
-.absent {
+.tile[data-state='absent'] {
   background-color: var(--color-absent);
   border: 0;
 }
 
-.present {
+.tile[data-state='present'] {
   background-color: var(--color-present);
   border: 0;
 }
 
-.correct {
+.tile[data-state='correct'] {
   background-color: var(--color-correct);
   border: 0;
 }
@@ -43,4 +43,51 @@
 
 .blue {
   color: var(--blue-icon);
+}
+
+.tile[data-state='tbd'] {
+  border: 2px solid darkgrey;
+}
+
+.tile[data-animation='pop'] {
+  animation-name: PopIn;
+  animation-duration: 100ms;
+}
+
+@keyframes PopIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+.tile[data-animation='flip-in'] {
+  animation-name: FlipIn;
+  animation-duration: 250ms;
+  animation-timing-function: ease-in;
+}
+@keyframes FlipIn {
+  0% {
+    transform: rotateX(0);
+  }
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+.tile[data-animation='flip-out'] {
+  animation-name: FlipOut;
+  animation-duration: 250ms;
+  animation-timing-function: ease-in;
+}
+@keyframes FlipOut {
+  0% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
 }
