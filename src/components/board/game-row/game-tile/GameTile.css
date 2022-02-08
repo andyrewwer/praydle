@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   user-select: none;
+  overflow: hidden;
 }
 
 .icon {
@@ -65,11 +66,13 @@
     opacity: 1;
   }
 }
+
 .tile[data-animation='flip-in'] {
   animation-name: FlipIn;
   animation-duration: 250ms;
   animation-timing-function: ease-in;
 }
+
 @keyframes FlipIn {
   0% {
     transform: rotateX(0);
@@ -78,16 +81,49 @@
     transform: rotateX(-90deg);
   }
 }
+
 .tile[data-animation='flip-out'] {
   animation-name: FlipOut;
   animation-duration: 250ms;
   animation-timing-function: ease-in;
 }
+
 @keyframes FlipOut {
   0% {
     transform: rotateX(-90deg);
   }
   100% {
     transform: rotateX(0);
+  }
+}
+
+.tile[data-animation='bounce'] {
+  animation-name: Bounce;
+  animation-duration: 800ms;
+}
+
+@keyframes Bounce {
+  0% {
+    z-index: 100;
+    overflow: visible;
+  }
+  20% {
+    transform: translateY(-25px);
+  }
+
+  40% {
+    transform: translateY(7px);
+  }
+
+  60% {
+    transform: translateY(-10px);
+  }
+
+  80% {
+    transform: translateY(3px);
+  }
+  100% {
+    z-index: 0;
+    overflow: hidden;
   }
 }

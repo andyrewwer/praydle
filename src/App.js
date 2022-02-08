@@ -3,17 +3,14 @@ import './App.css';
 import HeaderSection from './components/header/HeaderSection.js';
 import BoardSection from './components/board/BoardSection.js';
 import Keyboard from './components/keyboard/Keyboard.js';
-import {Icon} from './model/Icon';
-import {BUILDING_ICONS, WEAPON_ICONS, PEOPLE_ICONS, ANSWER_TYPE, ANIMATION_TYPE} from './utils/Enums';
+import {ENTER_KEY, BACKSPACE_KEY, GameService} from './service/GameService';
+import {ANIMATION_TYPE} from './utils/Enums';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBuilding, faCampground, faStore, faHome, faIgloo } from '@fortawesome/free-solid-svg-icons';
 import { faBomb, faDrum, faVirus, faDragon, faGuitar} from '@fortawesome/free-solid-svg-icons';
 import { faUserAstronaut, faUserGraduate, faUserMd, faUserNinja, faUserSecret} from '@fortawesome/free-solid-svg-icons';
 import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar} from '@fortawesome/free-solid-svg-icons';
 // requires FA Premium e.g. for weapons :( import { faAxe} from '@fortawesome/free-solid-svg-icons';
-
-const ENTER_KEY = 13;
-const BACKSPACE_KEY = 8;
 
 class App extends Component {
 
@@ -26,82 +23,70 @@ class App extends Component {
   constructor() {
     super()
     this.render.bind(this);
+    this.gameService = new GameService();
     this.state = {
       icons: [[], [], [], [], []],
+      animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
       current_row: 0
     }
     this.handleEnterPressed.bind(this);
     this.removeLastItem.bind(this);
   }
 
-  _handleKeyDown (e) {
-    if (e.keyCode === BACKSPACE_KEY) {
-      this.removeLastItem();
-    } else if (e.keyCode === ENTER_KEY) {
-      this.handleEnterPressed();
-    }
-  }
-
   componentDidMount() {
     document.addEventListener("keydown", this._handleKeyDown.bind(this));
   }
-  answerIsRight(icon) {
-    let answer = [BUILDING_ICONS.THREE, WEAPON_ICONS.FOUR, PEOPLE_ICONS.FIVE];
-    let icons = [answer[0].iconName, answer[1].iconName, answer[2].iconName];
-    let colors = [answer[0].color, answer[1].color, answer[2].color];
-    if (icons.indexOf(icon.iconName) > -1) {
-      return ANSWER_TYPE.CORRECT;
-    }
-    if (colors.indexOf(icon.color) > -1) {
-      // TODO check if the "RIGHT" answer is not implemented
-      return ANSWER_TYPE.PRESENT;
-    }
-    return ANSWER_TYPE.ABSENT;
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this._handleKeyDown.bind(this));
+  }
+
+  _handleKeyDown (e) {
+      if (e.keyCode === BACKSPACE_KEY) {
+        this.removeLastItem();
+      } else if (e.keyCode === ENTER_KEY) {
+        this.handleEnterPressed();
+      }
+    this.gameService.handleKeyDown(e);
   }
 
   removeLastItem() {
-    const _current_row = this.state.current_row
-    const list = this.state.icons;
-    list[_current_row] = list[_current_row].slice(0, -1);
-    this.setState({icons: list});
+    this.setState(this.gameService.removeLastItem(this.state));
   }
 
   animateAndSetItem(list, row, i, _current_row) {
     setTimeout(function() {
-      row[i].animation = ANIMATION_TYPE.FLIP_IN;
-      list[_current_row] = row;
-      this.setState({icons: list});
-
+      this.setState(this.gameService.startFlipAnimation(list, row, i, _current_row));
       setTimeout(function() {
-        row[i].animation = ANIMATION_TYPE.FLIP_OUT;
-        row[i].status = this.answerIsRight(row[i]);
-        list[_current_row] = row;
-        this.setState({icons: list});
+        this.setState(this.gameService.continueFlipAnimationAndSetStatus(list, row, i, _current_row));
 
-          setTimeout(function() {
-            row[i].animation = ANIMATION_TYPE.IDLE;
-            list[_current_row] = row;
-            this.setState({icons: list});
-            }.bind(this), 250);
-        }.bind(this), 250);
-    }.bind(this), 50+(50*i));
+        if (i === 2 && this.gameService.rowIsCorrect(row)) {
+          for (let j = 0; j < 3; j ++) {
+            setTimeout(function() {
+              this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
+            }.bind(this), 450+(150*j));
+          }
+        }
+      }.bind(this), 250);
+    }.bind(this), 100+(500*i));
   }
 
   handleEnterPressed() {
     const _current_row = this.state.current_row
-    if (this.canAddNewRow()) {
+    if (this.gameService.currentRowIsComplete(this.state)) {
       const list = this.state.icons;
       const row = list[_current_row]
       for (let i = 0; i < row.length; i ++) {
         this.animateAndSetItem(list, row, i, _current_row);
       }
-      this.setState({current_row: _current_row + 1})
-    } else {
-      // TODO animate NOT ADDING
+      return this.setState({current_row: _current_row + 1})
     }
-  }
-  canAddNewRow() {
-    return this.state.icons[this.state.current_row].length === 3
+    const list = this.state.animations
+    this.setState(this.gameService.performShakeAnimation(list, _current_row));
+    setTimeout(function() {
+      list[_current_row] = ANIMATION_TYPE.IDLE;
+      this.setState({animations: list});
+    }.bind(this), 200);
   }
 
   render = () => {
@@ -118,10 +103,9 @@ class App extends Component {
         this.handleEnterPressed()
         return
       }
-      if (this.state.icons[_current_row].length < 3) {
+      if (!this.gameService.currentRowIsComplete(this.state)) {
         const list = this.state.icons;
-        list[_current_row] = list[_current_row].concat(new Icon(icon.iconName, icon.color))
-        this.setState({icons: list});
+        this.setState(this.gameService.addItemToRow(list, this.state.current_row, icon));
         setTimeout(function() {
           list[_current_row].at(-1).animation = ANIMATION_TYPE.IDLE
           this.setState({icons: list});
@@ -133,7 +117,7 @@ class App extends Component {
     return (
       <div className="App">
         <HeaderSection />
-        <BoardSection icons={this.state.icons}/>
+        <BoardSection icons={this.state.icons} animations={this.state.animations}/>
         <Keyboard keyPressCallback={keyPress}/>
       </div>
     );

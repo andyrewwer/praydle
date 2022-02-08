@@ -3,3 +3,18 @@
   grid-template-columns: repeat(3, 60px);
   grid-column-gap: 8px;
 }
+
+.game-row[data-animation='shake'] {
+  animation-name: Shake;
+  animation-duration: 300ms;
+}
+
+@keyframes Shake {
+  0%, 40%, 80% {
+    transform: translateX(5px);
+  }
+
+  20%, 60%, 100% {
+    transform: translateX(-5px);
+  }
+}

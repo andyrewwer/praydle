@@ -106,5 +106,7 @@ export const ANIMATION_TYPE = {
   IDLE: 'idle',
   POP: 'pop',
   FLIP_IN: 'flip-in',
-  FLIP_OUT: 'flip-out'
+  FLIP_OUT: 'flip-out',
+  BOUNCE: 'bounce',
+  SHAKE: 'shake'
 }
