@@ -7,6 +7,11 @@
   overflow: hidden;
 }
 
+.tile-title {
+  font-weight: 800;
+  background-color: darkgrey;
+  color: lightgrey;
+}
 .icon {
   font-size: 2.5rem;
 }

@@ -47,7 +47,6 @@ class App extends Component {
       } else if (e.keyCode === ENTER_KEY) {
         this.handleEnterPressed();
       }
-    this.gameService.handleKeyDown(e);
   }
 
   removeLastItem() {

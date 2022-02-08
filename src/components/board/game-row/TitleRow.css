@@ -1,0 +1,5 @@
+.title-row {
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  grid-column-gap: 8px;
+}

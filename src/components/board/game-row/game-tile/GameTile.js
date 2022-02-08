@@ -6,14 +6,22 @@ class GameTile extends Component {
   constructor(props) {
     super(props);
     this.render.bind(this);
+    console.log(this.props)
   }
 
   render = () => {
     return (
-      <div className={'tile ' + this.props.tileClass} data-state={this.props.icon.status} data-animation={this.props.icon.animation}>
-        {!!this.props.icon &&
+      <React.Fragment>
+        {!!this.props.title ?
+        <div className='tile tile-title'>
+            <span> {this.props.title}</span>
+        </div> :
+        <div className={'tile ' + this.props.tileClass} data-state={this.props.icon.status} data-animation={this.props.icon.animation}>
+          {!!this.props.icon &&
           <FontAwesomeIcon icon={this.props.icon.iconName} className={'icon ' + this.props.icon.color}/>}
-      </div>
+        </div>}
+
+      </React.Fragment>
     )}
   }
 export default GameTile;
