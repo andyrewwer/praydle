@@ -1,12 +1,11 @@
 import { ANSWER_TYPE, ANIMATION_TYPE} from '../utils/Enums';
 
-class Icon {
-  constructor(iconName, color, status, animation) {
-    this.iconName = iconName;
-    this.color = color;
+class Tile {
+  constructor(letter, status, animation) {
+    this.letter = letter;
     this.status = !!status ? status : ANSWER_TYPE.TBD ;
     this.animation = !!animation ? animation : ANIMATION_TYPE.POP;
   }
 }
 
-export { Icon };
+export { Tile };

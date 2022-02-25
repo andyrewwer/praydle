@@ -7,11 +7,6 @@
   overflow: hidden;
 }
 
-.tile-title {
-  font-weight: 800;
-  background-color: darkgrey;
-  color: lightgrey;
-}
 .icon {
   font-size: 2.5rem;
 }
@@ -31,24 +26,24 @@
   border: 0;
 }
 
-.red {
-  color: var(--red-icon);
+.color-1 {
+  color: var(--color-1-icon);
 }
 
-.orange {
-  color: var(--orange-icon);
+.color-2 {
+  color: var(--color-2-icon);
 }
 
-.beige {
-  color: var(--beige-icon);
+.color-3 {
+  color: var(--color-3-icon);
 }
 
-.green {
-  color: var(--green-icon);
+.color-4 {
+  color: var(--color-4-icon);
 }
 
-.blue {
-  color: var(--blue-icon);
+.color-5 {
+  color: var(--color-5-icon);
 }
 
 .tile[data-state='tbd'] {

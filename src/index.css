@@ -1,3 +1,24 @@
+@import "open-props/style";
+
+:root {
+  --color-1-icon: var(--gray-2);
+  --color-2-icon: var(--gray-8);
+  --color-3-icon: var(--yellow-1);
+  --color-4-icon: var(--teal-6);
+  --color-5-icon: var(--indigo-4);
+  --grey-icon: grey;
+  --keyboard-background: lightgrey;
+  --game-max-width: 500px;
+  --color-present: var(--yellow-6);
+  --color-correct: var(--green-3);
+  --color-absent: var(--gray-6);
+  --background: var(--gradient-7);
+}
+
+.nightmode {
+  /* --background: var(--gradient-4); */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +26,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  background: var(--background);
 }
 
 code {

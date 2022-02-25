@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Keyboard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {BUILDING_ICONS, WEAPON_ICONS, PEOPLE_ICONS, CONTROL_ICONS} from '../../utils/Enums.js'
+import {CONTROL_ICONS} from '../../utils/Enums.js'
 
 class Keyboard extends Component {
   constructor(props) {
@@ -13,27 +13,38 @@ class Keyboard extends Component {
     return (
         <div className="keyboard">
           <div className="row">
-            <div className="key" onClick={() => {this.props.keyPressCallback(BUILDING_ICONS.ONE)}}> <FontAwesomeIcon icon={BUILDING_ICONS.ONE.iconName} className={'key-icon ' + BUILDING_ICONS.ONE.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(BUILDING_ICONS.TWO)}}> <FontAwesomeIcon icon={BUILDING_ICONS.TWO.iconName} className={'key-icon ' + BUILDING_ICONS.TWO.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(BUILDING_ICONS.THREE)}}> <FontAwesomeIcon icon={BUILDING_ICONS.THREE.iconName} className={'key-icon ' + BUILDING_ICONS.THREE.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(BUILDING_ICONS.FOUR)}}> <FontAwesomeIcon icon={BUILDING_ICONS.FOUR.iconName} className={'key-icon ' + BUILDING_ICONS.FOUR.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(BUILDING_ICONS.FIVE)}}> <FontAwesomeIcon icon={BUILDING_ICONS.FIVE.iconName} className={'key-icon ' + BUILDING_ICONS.FIVE.color}/></div>
-            <div className="key control-key" onClick={() => {this.props.keyPressCallback(CONTROL_ICONS.BACKSPACE)}}> <FontAwesomeIcon icon={CONTROL_ICONS.BACKSPACE.iconName} className={'key-icon ' + CONTROL_ICONS.BACKSPACE.color}/></div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('Q')}}> Q </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('W')}}> W </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('E')}}> E </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('R')}}> R </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('T')}}> T </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('Y')}}> Y </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('U')}}> U </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('I')}}> I </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('O')}}> O </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('P')}}> P </div>
           </div>
           <div className="row">
-            <div className="key" onClick={() => {this.props.keyPressCallback(WEAPON_ICONS.ONE)}}> <FontAwesomeIcon icon={WEAPON_ICONS.ONE.iconName} className={'key-icon ' + WEAPON_ICONS.ONE.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(WEAPON_ICONS.TWO)}}> <FontAwesomeIcon icon={WEAPON_ICONS.TWO.iconName} className={'key-icon ' + WEAPON_ICONS.TWO.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(WEAPON_ICONS.THREE)}}> <FontAwesomeIcon icon={WEAPON_ICONS.THREE.iconName} className={'key-icon ' + WEAPON_ICONS.THREE.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(WEAPON_ICONS.FOUR)}}> <FontAwesomeIcon icon={WEAPON_ICONS.FOUR.iconName} className={'key-icon ' + WEAPON_ICONS.FOUR.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(WEAPON_ICONS.FIVE)}}> <FontAwesomeIcon icon={WEAPON_ICONS.FIVE.iconName} className={'key-icon ' + WEAPON_ICONS.FIVE.color}/></div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('A')}}> A </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('S')}}> S </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('D')}}> D </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('F')}}> F </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('G')}}> G </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('H')}}> H </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('J')}}> J </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('K')}}> K </div>
+            <div className="key" onClick={() => {this.props.keyPressCallback('L')}}> L </div>
           </div>
           <div className="row">
-            <div className="key" onClick={() => {this.props.keyPressCallback(PEOPLE_ICONS.ONE)}}> <FontAwesomeIcon icon={PEOPLE_ICONS.ONE.iconName} className={'key-icon ' + PEOPLE_ICONS.ONE.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(PEOPLE_ICONS.TWO)}}> <FontAwesomeIcon icon={PEOPLE_ICONS.TWO.iconName} className={'key-icon ' + PEOPLE_ICONS.TWO.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(PEOPLE_ICONS.THREE)}}> <FontAwesomeIcon icon={PEOPLE_ICONS.THREE.iconName} className={'key-icon ' + PEOPLE_ICONS.THREE.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(PEOPLE_ICONS.FOUR)}}> <FontAwesomeIcon icon={PEOPLE_ICONS.FOUR.iconName} className={'key-icon ' + PEOPLE_ICONS.FOUR.color}/></div>
-            <div className="key" onClick={() => {this.props.keyPressCallback(PEOPLE_ICONS.FIVE)}}> <FontAwesomeIcon icon={PEOPLE_ICONS.FIVE.iconName} className={'key-icon ' + PEOPLE_ICONS.FIVE.color}/></div>
-            <div className="key control-key" onClick={() => {this.props.keyPressCallback(CONTROL_ICONS.ENTER)}}> <FontAwesomeIcon icon={CONTROL_ICONS.ENTER.iconName} className={'key-icon ' + CONTROL_ICONS.ENTER.color}/></div>
+            <div className="key control-key" onClick={this.props.backspaceCallback}> <FontAwesomeIcon icon={CONTROL_ICONS.BACKSPACE.iconName} className={'key-icon ' + CONTROL_ICONS.BACKSPACE.color}/></div>
+              <div className="key" onClick={() => {this.props.keyPressCallback('Z')}}> Z </div>
+              <div className="key" onClick={() => {this.props.keyPressCallback('X')}}> X </div>
+              <div className="key" onClick={() => {this.props.keyPressCallback('C')}}> C </div>
+              <div className="key" onClick={() => {this.props.keyPressCallback('V')}}> V </div>
+              <div className="key" onClick={() => {this.props.keyPressCallback('B')}}> B </div>
+              <div className="key" onClick={() => {this.props.keyPressCallback('N')}}> N </div>
+              <div className="key" onClick={() => {this.props.keyPressCallback('M')}}> M </div>
+            <div className="key control-key" onClick={this.props.enterCallback}> <FontAwesomeIcon icon={CONTROL_ICONS.ENTER.iconName} className={'key-icon ' + CONTROL_ICONS.ENTER.color}/></div>
           </div>
         </div>
     )}

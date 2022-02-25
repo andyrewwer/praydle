@@ -1,69 +1,69 @@
 export const BUILDING_ICONS = {
   ONE: {
     iconName: 'building',
-    color: 'red'
+    color: 'color-1'
   },
   TWO: {
-    iconName: 'campground',
-    color: 'orange'
+    iconName: 'home',
+    color: 'color-2'
   },
   THREE: {
     iconName: 'igloo',
-    color: 'beige'
+    color: 'color-3'
   },
   FOUR: {
-    iconName: 'home',
-    color: 'green'
+    iconName: 'store',
+    color: 'color-4'
   },
   FIVE: {
-    iconName: 'store',
-    color: 'blue'
+    iconName: 'campground',
+    color: 'color-5'
   },
 }
 
 export const WEAPON_ICONS = {
   ONE: {
     iconName: 'virus',
-    color: 'red'
+    color: 'color-1'
   },
   TWO: {
-    iconName: 'drum',
-    color: 'orange'
+    iconName: 'bomb',
+    color: 'color-2'
   },
   THREE: {
     iconName: 'guitar',
-    color: 'beige'
+    color: 'color-3'
   },
   FOUR: {
     iconName: 'dragon',
-    color: 'green'
+    color: 'color-4'
   },
   FIVE: {
-    iconName: 'bomb',
-    color: 'blue'
+    iconName: 'drum',
+    color: 'color-5'
   },
 }
 
 export const PEOPLE_ICONS = {
   ONE: {
-    iconName: 'user-ninja',
-    color: 'red'
+    iconName: 'user-md',
+    color: 'color-1'
   },
   TWO: {
-    iconName: 'user-md',
-    color: 'orange'
+    iconName: 'user-ninja',
+    color: 'color-2'
   },
   THREE: {
     iconName: 'user-secret',
-    color: 'beige'
+    color: 'color-3'
   },
   FOUR: {
     iconName: 'user-astronaut',
-    color: 'green'
+    color: 'color-4'
   },
   FIVE: {
     iconName: 'user-graduate',
-    color: 'blue'
+    color: 'color-5'
   },
 }
 
