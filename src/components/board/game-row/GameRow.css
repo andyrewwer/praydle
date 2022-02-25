@@ -1,7 +1,7 @@
 .game-row {
   display: grid;
-  grid-template-columns: repeat(3, var(--tile-size));
   grid-column-gap: 5px;
+  /* justify-item: center; */
 }
 
 .game-row[data-animation='shake'] {

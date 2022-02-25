@@ -13,16 +13,28 @@ class App extends Component {
   confirmation_icons = [faBackspace, faCheckCircle]
   header_icons = [faCog, faQuestionCircle, faChartBar]
 
+// TODO don't allow typing during animation
   constructor() {
     super()
     this.render.bind(this);
     this.gameService = new GameService();
+    this.removeLastItem.bind(this);
+    const current_answer = this.gameService.getTodaysAnswer();
+
     this.state = {
+      answerLength: current_answer.length,
       rows: [[], [], [], [], [], []],
+      keys: this.createEmptyLetters(),
       animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
       current_row: 0
     }
-    this.removeLastItem.bind(this);
+  }
+
+  createEmptyLetters() {
+    return {A: 'none', B: 'none', C: 'none', D: 'none', E: 'none', F: 'none', G: 'none',
+            H: 'none', I: 'none', J: 'none', K: 'none', L: 'none', M: 'none', N: 'none',
+            O: 'none', P: 'none', Q: 'none', R: 'none', S: 'none', T: 'none', U: 'none',
+            V: 'none', W: 'none', X: 'none', Y: 'none', Z: 'none'}
   }
 
   componentDidMount() {
@@ -37,7 +49,10 @@ class App extends Component {
       if (e.keyCode === BACKSPACE_KEY) {
         this.removeLastItem();
       } else if (e.keyCode === ENTER_KEY) {
-        this.handleEnterPressed();
+        this.enterPressed();
+        // check if letter
+      } else if (String.fromCharCode(e.keyCode).toUpperCase() !== String.fromCharCode(e.keyCode).toLowerCase()) {
+        this.keyPressed(String.fromCharCode(e.keyCode).toUpperCase());
       }
   }
 
@@ -51,8 +66,8 @@ class App extends Component {
       setTimeout(function() {
         this.setState(this.gameService.continueFlipAnimationAndSetStatus(list, row, i, _current_row));
 
-        if (i === 2 && this.gameService.rowIsCorrect(row)) {
-          for (let j = 0; j < 3; j ++) {
+        if (i === this.state.answerLength - 1 && this.gameService.rowIsCorrect(row)) {
+          for (let j = 0; j < this.state.answerLength; j ++) {
             setTimeout(function() {
               this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
             }.bind(this), 450+(150*j));
@@ -66,11 +81,19 @@ class App extends Component {
     const _current_row = this.state.current_row
     if (this.gameService.currentRowIsComplete(this.state)) {
       const _rows = this.state.rows;
-      const row = _rows[_current_row]
+      const row = _rows[_current_row];
+      const _keys = this.state.keys
+      this.gameService.checkRowValidity(row);
+      this.gameService.updateKeys(row, _keys);
+      console.log(_keys)
       for (let i = 0; i < row.length; i ++) {
         this.animateAndSetItem(_rows, row, i, _current_row);
       }
-      return this.setState({current_row: _current_row + 1})
+
+      return this.setState({
+        current_row: _current_row + 1,
+        keys: _keys
+      })
     }
     const _animations = this.state.animations
     this.setState(this.gameService.performShakeAnimation(_animations, _current_row));
@@ -101,8 +124,11 @@ class App extends Component {
     return (
       <div className="App nightmode">
         <HeaderSection />
-        <BoardSection rows={this.state.rows} animations={this.state.animations}/>
-        <Keyboard keyPressCallback={this.keyPressed.bind(this)} backspaceCallback={this.backspacePressed.bind(this)} enterCallback={this.enterPressed.bind(this)}/>
+        <BoardSection rows={this.state.rows} animations={this.state.animations} answerLength={this.state.answerLength}/>
+        <Keyboard keyPressCallback={this.keyPressed.bind(this)}
+            backspaceCallback={this.backspacePressed.bind(this)}
+            enterCallback={this.enterPressed.bind(this)}
+            keys={this.state.keys}/>
       </div>
     );
   }

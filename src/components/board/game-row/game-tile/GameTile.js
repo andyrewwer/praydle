@@ -9,7 +9,7 @@ class GameTile extends Component {
 
   render = () => {
     return (
-      <div className={'tile flex-center ' + this.props.tileClass} data-state={this.props.tile.status} data-animation={this.props.tile.animation}>
+      <div className={'tile flex-center'} data-state={this.props.tile.status} data-animation={this.props.tile.animation}>
         <span className={"letter"}> {this.props.tile.letter}</span>
       </div>
     )}

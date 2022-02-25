@@ -23,3 +23,18 @@
   font-size: var(--font-size-0);
   color: var(--gray-6);
 }
+
+.key[data-state='absent'] {
+  background-color: var(--color-absent);
+  color: var(--gray-0);
+}
+
+.key[data-state='present'] {
+  background-color: var(--color-present);
+  color: var(--gray-0);
+}
+
+.key[data-state='correct'] {
+  background-color: var(--color-correct);
+  color: var(--gray-0);
+}

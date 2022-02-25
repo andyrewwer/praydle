@@ -6,14 +6,20 @@ class GameRow extends Component {
   constructor(props) {
     super(props);
     this.render.bind(this);
+    this.createGameTiles()
   }
 
+  createGameTiles() {
+    var tiles = [];
+    for (let i = 0; i < this.props.answerLength; i++) {
+      tiles.push(<GameTile tile={!!this.props.row && this.props.row.length > i && this.props.row[i]} key={i}/>)
+    }
+    return tiles
+  }
   render = () => {
     return (
-      <div className="game-row" data-animation={this.props.animation}>
-        <GameTile tile={!!this.props.row && this.props.row.length > 0 && this.props.row[0]}/>
-        <GameTile tile={!!this.props.row && this.props.row.length > 1 && this.props.row[1]}/>
-        <GameTile tile={!!this.props.row && this.props.row.length > 2 && this.props.row[2]}/>
+      <div className="game-row" style={{gridTemplateColumns: "repeat(" + this.props.answerLength + ", var(--tile-size))"}} data-animation={this.props.animation}>
+        {this.createGameTiles()}
       </div>
     )}
   }

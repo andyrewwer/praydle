@@ -4,7 +4,7 @@ import {Tile} from '../model/Tile';
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
 // TODO multiple answers
-const answers = ['GOD']
+const answers = ['HOPE']
 
 class GameService {
 
@@ -16,28 +16,52 @@ class GameService {
   }
 
   currentRowIsComplete(state) {
-    return state.rows[state.current_row].length === 3
+    return state.rows[state.current_row].length === this.getTodaysAnswer().length
   }
 
   _countsInSet(row) {
     const counts = {};
     row.forEach(function (x) { counts[x] = (counts[x] || 0) + 1;});
     return counts
-
   }
 
-  setTileStatus(row, index) {
-    let current_answer = answers[0];
+  getTodaysAnswer() {
+    return answers[0];
+  }
 
-    // TODO BUG IF YOU CORRECT ALSO PRESENT
-    if (current_answer[index] === row[index].letter) {
-      return ANSWER_TYPE.CORRECT;
+  checkRowValidity(row) {
+    let current_answer = this.getTodaysAnswer();
+    let remaining_letters_in_guess = [];
+    let remaining_letters_in_answer = [];
+    for (let i = 0; i < row.length; i ++) {
+      if (current_answer[i] === row[i].letter) {
+        row[i].nextStatus = ANSWER_TYPE.CORRECT;
+        continue;
+      }
+      remaining_letters_in_guess.push({letter: row[i].letter, index: i})
+      remaining_letters_in_answer.push(current_answer[i]);
     }
-    if (current_answer.indexOf(row[index].letter) > -1 ) {
-      console.log('present')
-      return ANSWER_TYPE.PRESENT;
+
+    for (let i = 0; i < remaining_letters_in_guess.length; i ++) {
+      const index = remaining_letters_in_answer.indexOf(remaining_letters_in_guess[i].letter);
+      if (index > -1) {
+        row[remaining_letters_in_guess[i].index].nextStatus = ANSWER_TYPE.PRESENT;
+        remaining_letters_in_answer.splice(index, 1);
+        continue
+      }
+      row[remaining_letters_in_guess[i].index].nextStatus = ANSWER_TYPE.ABSENT;
     }
-    return ANSWER_TYPE.ABSENT;
+  }
+
+  updateKeys(row, keys) {
+    for (let i = 0; i < row.length; i ++) {
+      if (keys[row[i].letter] === 'none') {
+        keys[row[i].letter] = row[i].nextStatus
+      }
+      if (keys[row[i].letter] === ANSWER_TYPE.PRESENT && row[i].nextStatus === ANSWER_TYPE.CORRECT) {
+        keys[row[i].letter] = row[i].nextStatus
+      }
+    }
   }
 
   startFlipAnimation(list, row, i, current_row) {
@@ -48,7 +72,7 @@ class GameService {
 
   continueFlipAnimationAndSetStatus(list, row, i, current_row) {
     row[i].animation = ANIMATION_TYPE.FLIP_OUT;
-    row[i].status = this.setTileStatus(row, i);
+    row[i].status = row[i].nextStatus;
     list[current_row] = row;
     return {rows: list}
   }
