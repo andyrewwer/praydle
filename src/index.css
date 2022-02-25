@@ -13,10 +13,14 @@
   --color-correct: var(--green-3);
   --color-absent: var(--gray-6);
   --background: var(--gradient-7);
+  --tile-size: 4rem;
+  --letter-size: 2.5rem;
 }
 
 .nightmode {
-  /* --background: var(--gradient-4); */
+  /* --color-present: var(--yellow-1);
+  --color-correct: var(--green-6);
+  --color-absent: var(--gray-1); */
 }
 
 body {
@@ -28,11 +32,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.App {
-  background: var(--background);
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

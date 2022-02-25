@@ -9,13 +9,9 @@ class GameTile extends Component {
 
   render = () => {
     return (
-      <React.Fragment>
-        {<div className={'tile ' + this.props.tileClass} data-state={this.props.tile.status} data-animation={this.props.tile.animation}>
-          {!!this.props.tile &&
-            <span className={"icon"}> {this.props.tile.letter}</span>}
-        </div>}
-
-      </React.Fragment>
+      <div className={'tile flex-center ' + this.props.tileClass} data-state={this.props.tile.status} data-animation={this.props.tile.animation}>
+        <span className={"letter"}> {this.props.tile.letter}</span>
+      </div>
     )}
   }
 export default GameTile;

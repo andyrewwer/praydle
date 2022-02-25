@@ -12,7 +12,7 @@ class HeaderSection extends Component {
 // TODO implement buttons lol
   render = () => {
     return (
-        <div className="header-container">
+        <div className="header-container flex-center">
           <div className="hint"> <FontAwesomeIcon icon={HEADER_ICONS.HINT.iconName} className={'header-icon'}/></div>
           <div className="title"> PRAY-DLE </div>
           <div className="statistics"> <FontAwesomeIcon icon={HEADER_ICONS.STATISTICS.iconName} className={'header-icon'}/></div>

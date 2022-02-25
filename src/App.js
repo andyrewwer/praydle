@@ -18,7 +18,7 @@ class App extends Component {
     this.render.bind(this);
     this.gameService = new GameService();
     this.state = {
-      rows: [[], [], [], [], []],
+      rows: [[], [], [], [], [], []],
       animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
       current_row: 0
     }
