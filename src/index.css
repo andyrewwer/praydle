@@ -6,7 +6,7 @@
   --color-present: var(--orange-4);
   --color-correct: var(--green-7);
   --color-absent: var(--gray-6);
-  --tile-size: 4rem;
+  --tile-size: 3.8rem;
   --letter-size: 2.5rem;
 }
 

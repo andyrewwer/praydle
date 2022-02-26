@@ -7,6 +7,7 @@ import {ENTER_KEY, BACKSPACE_KEY, GameService} from './service/GameService';
 import {ANIMATION_TYPE} from './utils/Enums';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar} from '@fortawesome/free-solid-svg-icons';
+import ModalContainer from './components/modal/ModalContainer'
 
 class App extends Component {
 
@@ -129,6 +130,7 @@ class App extends Component {
             backspaceCallback={this.backspacePressed.bind(this)}
             enterCallback={this.enterPressed.bind(this)}
             keys={this.state.keys}/>
+          <ModalContainer openModal={true}/>
       </div>
     );
   }
