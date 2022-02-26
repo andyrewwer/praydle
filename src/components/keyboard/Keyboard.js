@@ -9,8 +9,6 @@ class Keyboard extends Component {
     this.render.bind(this);
   }
 
-  // TODO keys go different colors
-
   render = () => {
     return (
         <div className="keyboard">

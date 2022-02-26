@@ -1,10 +1,10 @@
 import {ANSWER_TYPE, ANIMATION_TYPE} from '../utils/Enums';
 import {Tile} from '../model/Tile';
-
+import {check_word} from '../utils/short_words.js'
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
-// TODO multiple answers
-const answers = ['HOPE']
+// TODO multiple answers, recommended max 6 letters
+const answers = [{word: 'JESUS'}]
 
 class GameService {
 
@@ -15,8 +15,17 @@ class GameService {
     return {rows: list};
   }
 
-  currentRowIsComplete(state) {
-    return state.rows[state.current_row].length === this.getTodaysAnswer().length
+  rowIsComplete(row) {
+    return row.length === this.getTodaysAnswer().length
+  }
+
+  wordIsValid(row) {
+    let word = '';
+    for (let i = 0; i < row.length; i++) {
+      word += row[i].letter
+    }
+    let fact = check_word(word)
+    return fact
   }
 
   _countsInSet(row) {
@@ -26,7 +35,7 @@ class GameService {
   }
 
   getTodaysAnswer() {
-    return answers[0];
+    return answers[0].word;
   }
 
   checkRowValidity(row) {
@@ -99,5 +108,3 @@ class GameService {
 }
 
 export {GameService};
-
-// TODO consider do we need "idle" state

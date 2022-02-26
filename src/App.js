@@ -13,7 +13,7 @@ class App extends Component {
   confirmation_icons = [faBackspace, faCheckCircle]
   header_icons = [faCog, faQuestionCircle, faChartBar]
 
-// TODO don't allow typing during animation
+// TODO don't allow typing during animation & when game is over
   constructor() {
     super()
     this.render.bind(this);
@@ -79,22 +79,22 @@ class App extends Component {
 
   enterPressed() {
     const _current_row = this.state.current_row
-    if (this.gameService.currentRowIsComplete(this.state)) {
+    if (this.gameService.rowIsComplete(this.state.rows[this.state.current_row]) && this.gameService.wordIsValid(this.state.rows[this.state.current_row])) {
       const _rows = this.state.rows;
       const row = _rows[_current_row];
+      // TODO this animation for keys should be AFTER the animation not before. NBD
       const _keys = this.state.keys
       this.gameService.checkRowValidity(row);
       this.gameService.updateKeys(row, _keys);
-      console.log(_keys)
       for (let i = 0; i < row.length; i ++) {
         this.animateAndSetItem(_rows, row, i, _current_row);
       }
-
       return this.setState({
         current_row: _current_row + 1,
         keys: _keys
       })
     }
+    // TODO message based either "too small" or "not a real word"
     const _animations = this.state.animations
     this.setState(this.gameService.performShakeAnimation(_animations, _current_row));
     setTimeout(function() {
@@ -104,7 +104,7 @@ class App extends Component {
   }
 
   keyPressed(letter) {
-    if (!this.gameService.currentRowIsComplete(this.state)) {
+    if (!this.gameService.rowIsComplete(this.state.rows[this.state.current_row])) {
       const _rows = this.state.rows;
       this.setState(this.gameService.addItemToRow(_rows, this.state.current_row, letter));
       setTimeout(function() {
