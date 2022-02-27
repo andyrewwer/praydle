@@ -74,6 +74,9 @@ class App extends Component {
             setTimeout(function() {
               this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
             }.bind(this), 450+(150*j));
+          setTimeout(function() {
+            this.openModal(MODALS.BIBLE);
+          }.bind(this), 450+(150*this.state.answerLength)+500)
           }
         }
       }.bind(this), 250);
@@ -121,6 +124,12 @@ class App extends Component {
     this.removeLastItem();
   }
 
+  openModal(modal) {
+    this.setState({
+      modal: modal
+    })
+  }
+
   render = () => {
     library.add(this.confirmation_icons, this.header_icons, this.modal_icons);
     let closeModal = () => {
@@ -130,15 +139,11 @@ class App extends Component {
     }
 
     let openInstructionModal = () => {
-      this.setState({
-        modal: MODALS.INSTRUCTION
-      })
+      this.openModal(MODALS.INSTRUCTION);
     }
 
     let openBibleModal = () => {
-      this.setState({
-        modal: MODALS.BIBLE
-      })
+      this.openModal(MODALS.BIBLE);
     }
 
     return (
