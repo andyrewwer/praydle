@@ -7,30 +7,19 @@ import InstructionContent from './instruction-content/InstructionContent'
 // TODO prevent scroll behind modal
 export default class ModalContainer extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isOpen: props.openModal
-    }
-  }
-
   closeModal() {
-    this.setState({
-      isOpen: false
-    });
+    this.props.closeModal();
   }
 
   render () {
     return (
       <React.Fragment>
         <Modal
-          isOpen={this.state.isOpen}
+          isOpen={this.props.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           style={customStyles}
-          ariaHideApp={false}
-          centered
-          >
-          <InstructionContent/>
+          ariaHideApp={false}>
+          <InstructionContent closeModal={this.closeModal.bind(this)}/>
         </Modal>
       </React.Fragment>
     )

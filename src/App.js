@@ -6,13 +6,14 @@ import Keyboard from './components/keyboard/Keyboard.js';
 import {ENTER_KEY, BACKSPACE_KEY, GameService} from './service/GameService';
 import {ANIMATION_TYPE} from './utils/Enums';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar} from '@fortawesome/free-solid-svg-icons';
+import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
   header_icons = [faCog, faQuestionCircle, faChartBar]
+  modal_icons = [faTimes]
 
 // TODO don't allow typing during animation & when game is over
   constructor() {
@@ -27,7 +28,8 @@ class App extends Component {
       rows: [[], [], [], [], [], []],
       keys: this.createEmptyLetters(),
       animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
-      current_row: 0
+      current_row: 0,
+      openInstructionModal: true
     }
   }
 
@@ -75,7 +77,7 @@ class App extends Component {
           }
         }
       }.bind(this), 250);
-    }.bind(this), 100+(500*i));
+    }.bind(this), 500*i);
   }
 
   enterPressed() {
@@ -120,7 +122,12 @@ class App extends Component {
   }
 
   render = () => {
-    library.add(this.confirmation_icons, this.header_icons);
+    library.add(this.confirmation_icons, this.header_icons, this.modal_icons);
+    let closeModal = () => {
+      this.setState({
+        openInstructionModal: false
+      })
+    }
 
     return (
       <div className="App nightmode">
@@ -130,7 +137,7 @@ class App extends Component {
             backspaceCallback={this.backspacePressed.bind(this)}
             enterCallback={this.enterPressed.bind(this)}
             keys={this.state.keys}/>
-          <ModalContainer openModal={true}/>
+          <ModalContainer modalIsOpen={this.state.openInstructionModal} closeModal={closeModal}/>
       </div>
     );
   }

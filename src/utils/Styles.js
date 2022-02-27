@@ -5,10 +5,10 @@ export const customStyles = {
       right: 'auto',
       bottom: 'auto',
       marginRight: '-50%',
-      transform: 'translate(-50%, -55%)',
-      maxWidth: '400px',
-      maxHeight: '80vh'
-    }, overlay: {
-      zIndex: '777'
+      transform: 'translate(-50%, -54%)',
+      maxWidth: '60vw',
+      maxHeight: '80vh',
+      border: 0,
+      boxShadow: 'var(--shadow-5)'
     }
 };

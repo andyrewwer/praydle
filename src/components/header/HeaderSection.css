@@ -13,3 +13,7 @@
   font-weight: 750;
   font-size: 1.8rem;
 }
+
+.title-color-span { 
+  color: var(--color-title);
+}

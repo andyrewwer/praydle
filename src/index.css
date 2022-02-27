@@ -8,6 +8,7 @@
   --color-absent: var(--gray-6);
   --tile-size: 3.8rem;
   --letter-size: 2.5rem;
+  --color-title: brown;
 }
 
 .nightmode {
