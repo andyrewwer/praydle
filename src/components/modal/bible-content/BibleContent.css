@@ -1,0 +1,19 @@
+.bible-verse {
+  max-width: 25rem;
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-5);
+  color: var(--gray-8);
+  line-height: var(--font-lineheight-1);
+  letter-spacing: var(--font-letterspacing-1);
+}
+
+.verse-number {
+  font-size: 0.7rem;
+  font-style: italic;
+  font-weight: 0;
+  margin-left: 10px;
+}
+
+.bottom-border {
+  border-bottom: 1px solid var(--gray-4);
+}

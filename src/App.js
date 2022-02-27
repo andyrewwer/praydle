@@ -4,15 +4,15 @@ import HeaderSection from './components/header/HeaderSection.js';
 import BoardSection from './components/board/BoardSection.js';
 import Keyboard from './components/keyboard/Keyboard.js';
 import {ENTER_KEY, BACKSPACE_KEY, GameService} from './service/GameService';
-import {ANIMATION_TYPE} from './utils/Enums';
+import {ANIMATION_TYPE, MODALS} from './utils/Enums';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
-  header_icons = [faCog, faQuestionCircle, faChartBar]
+  header_icons = [faCog, faQuestionCircle, faChartBar, faBible]
   modal_icons = [faTimes]
 
 // TODO don't allow typing during animation & when game is over
@@ -29,7 +29,7 @@ class App extends Component {
       keys: this.createEmptyLetters(),
       animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
       current_row: 0,
-      openInstructionModal: true
+      modal: MODALS.INSTRUCTION
     }
   }
 
@@ -125,25 +125,31 @@ class App extends Component {
     library.add(this.confirmation_icons, this.header_icons, this.modal_icons);
     let closeModal = () => {
       this.setState({
-        openInstructionModal: false
+        modal: false
       })
     }
 
-    let openModal = () => {
+    let openInstructionModal = () => {
       this.setState({
-        openInstructionModal: true
+        modal: MODALS.INSTRUCTION
+      })
+    }
+
+    let openBibleModal = () => {
+      this.setState({
+        modal: MODALS.BIBLE
       })
     }
 
     return (
       <div className="App nightmode">
-        <HeaderSection showInstructionModal={openModal}/>
+        <HeaderSection showInstructionModal={openInstructionModal} showBibleModal={openBibleModal}/>
         <BoardSection rows={this.state.rows} animations={this.state.animations} answerLength={this.state.answerLength}/>
         <Keyboard keyPressCallback={this.keyPressed.bind(this)}
             backspaceCallback={this.backspacePressed.bind(this)}
             enterCallback={this.enterPressed.bind(this)}
             keys={this.state.keys}/>
-          <ModalContainer modalIsOpen={this.state.openInstructionModal} closeModal={closeModal}/>
+          <ModalContainer modal={this.state.modal} closeModal={closeModal}/>
       </div>
     );
   }

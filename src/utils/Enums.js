@@ -1,3 +1,8 @@
+export const MODALS = {
+  INSTRUCTION: 'instruction',
+  BIBLE: 'bible'
+}
+
 export const CONTROL_ICONS = {
   BACKSPACE: {
     iconName: 'backspace',
@@ -20,6 +25,10 @@ export const HEADER_ICONS = {
   },
   STATISTICS: {
     iconName: 'chart-bar',
+    color: 'none'
+  },
+  BIBLE: {
+    iconName: 'bible',
     color: 'none'
   }
 }
