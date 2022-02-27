@@ -18,7 +18,8 @@ export default class ModalContainer extends Component {
           isOpen={this.props.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           style={customStyles}
-          ariaHideApp={false}>
+          ariaHideApp={false}
+          closeTimeoutMS={400}>
           <InstructionContent closeModal={this.closeModal.bind(this)}/>
         </Modal>
       </React.Fragment>

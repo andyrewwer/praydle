@@ -129,9 +129,15 @@ class App extends Component {
       })
     }
 
+    let openModal = () => {
+      this.setState({
+        openInstructionModal: true
+      })
+    }
+
     return (
       <div className="App nightmode">
-        <HeaderSection />
+        <HeaderSection showInstructionModal={openModal}/>
         <BoardSection rows={this.state.rows} animations={this.state.animations} answerLength={this.state.answerLength}/>
         <Keyboard keyPressCallback={this.keyPressed.bind(this)}
             backspaceCallback={this.backspacePressed.bind(this)}

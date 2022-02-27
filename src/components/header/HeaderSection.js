@@ -13,7 +13,7 @@ class HeaderSection extends Component {
   render = () => {
     return (
         <div className="header-container flex-center">
-          <div className="hint"> <FontAwesomeIcon icon={HEADER_ICONS.HINT.iconName} className={'header-icon'}/></div>
+          <div className="hint" onClick={this.props.showInstructionModal}> <FontAwesomeIcon icon={HEADER_ICONS.HINT.iconName} className={'header-icon'}/></div>
           <div className="title"> <span className="title-color-span">PRAY</span>DLE </div>
           <div className="statistics"> <FontAwesomeIcon icon={HEADER_ICONS.STATISTICS.iconName} className={'header-icon'}/></div>
           <div className="settings"> <FontAwesomeIcon icon={HEADER_ICONS.SETTINGS.iconName} className={'header-icon'}/></div>

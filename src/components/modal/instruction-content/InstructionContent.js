@@ -32,8 +32,8 @@ export default class InstructionContent extends Component {
 
   render () {
     return (
-      <>
-      <FontAwesomeIcon icon={"times"} className={'close-icon'} onClick={this.props.closeModal}/>
+      <div onClick={this.props.closeModal}>
+      <FontAwesomeIcon icon={"times"} className={'close-icon'}/>
         <div className="instructions bottom-border">
           <p> Guess the <b className="praydle-span">PRAY</b><b>DLE</b> in six attempts.</p>
           <p> Each guess must be a valid word. Hit the enter button to submit.</p>
@@ -67,7 +67,7 @@ export default class InstructionContent extends Component {
           <p className='new'> Once you've guessed the word, there will be a short <b>pray</b>er encouragement based on todays word to help us focus on God</p>
           <b> A new PRAYDLE will be available every day</b>
         </div>
-      </>
+      </div>
     )
   }
 }
