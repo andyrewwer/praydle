@@ -4,7 +4,7 @@ import {check_word} from '../utils/short_words.js'
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
 // TODO multiple answers, recommended max 6 letters
-const answers = [{word: 'GRACE'}]
+const answers = [{word: 'GLORY'}]
 
 class GameService {
 

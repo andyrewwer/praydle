@@ -84,6 +84,7 @@ class App extends Component {
   }
 
   enterPressed() {
+    console.log('started', new Date().toISOString());
     const _current_row = this.state.current_row
     if (this.gameService.rowIsComplete(this.state.rows[this.state.current_row]) && this.gameService.wordIsValid(this.state.rows[this.state.current_row])) {
       const _rows = this.state.rows;
@@ -95,6 +96,7 @@ class App extends Component {
       for (let i = 0; i < row.length; i ++) {
         this.animateAndSetItem(_rows, row, i, _current_row);
       }
+      console.log('ended', new Date().toISOString());
       return this.setState({
         current_row: _current_row + 1,
         keys: _keys

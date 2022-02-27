@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import './BibleContent.css';
-import {ANSWER_TYPE, ANIMATION_TYPE} from '../../../utils/Enums';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import GameTile from '../../board/game-row/game-tile/GameTile'
 export default class BibleContent extends Component {
-
-  constructor() {
-    super();
-  }
 
   render () {
     return (
