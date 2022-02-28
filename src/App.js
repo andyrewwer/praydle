@@ -29,7 +29,8 @@ class App extends Component {
       animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
       current_row: 0,
       modal: MODALS.INSTRUCTION,
-      lock: true
+      lock: true,
+      gameOver: false
     }
   }
 
@@ -49,7 +50,7 @@ class App extends Component {
   }
 
   _handleKeyDown (e) {
-    if(this.state.lock) {
+    if (this.state.lock || this.state.gameOver) {
       return
     }
     if (e.keyCode === BACKSPACE_KEY) {
@@ -63,10 +64,37 @@ class App extends Component {
   }
 
   removeLastItem() {
-    if(this.state.lock) {
+    if (this.state.lock || this.state.gameOver) {
       return
     }
     this.setState(this.gameService.removeLastItem(this.state));
+  }
+
+  handleRowFinishedAnimating(list, row, i, _current_row) {
+    if (this.gameService.rowIsCorrect(row)) {
+      for (let j = 0; j < this.state.answerLength; j ++) {
+        setTimeout(function() {
+          this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
+        }.bind(this), 450+(150*j));
+        setTimeout(function() {
+          this.openModal(MODALS.BIBLE);
+        }.bind(this), 450+(150*this.state.answerLength)+500)
+      }
+      this.setState({
+        gameOver: true
+      });
+    } else {
+      this.setState({
+        lock: false,
+      });
+    }
+    const _keys = this.state.keys
+    this.gameService.updateKeys(row, _keys);
+    this.setState({
+      keys: _keys
+    });
+
+
   }
 
   animateAndSetItem(list, row, i, _current_row) {
@@ -74,29 +102,15 @@ class App extends Component {
       this.setState(this.gameService.startFlipAnimation(list, row, i, _current_row));
       setTimeout(function() {
         this.setState(this.gameService.continueFlipAnimationAndSetStatus(list, row, i, _current_row));
-
         if (i === this.state.answerLength - 1) {
-          if (this.gameService.rowIsCorrect(row)) {
-            for (let j = 0; j < this.state.answerLength; j ++) {
-              setTimeout(function() {
-                this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
-              }.bind(this), 450+(150*j));
-            setTimeout(function() {
-              this.openModal(MODALS.BIBLE);
-            }.bind(this), 450+(150*this.state.answerLength)+500)
-            }
-          } else {
-            this.setState({
-              lock: false
-            });
-          }
+          this.handleRowFinishedAnimating(list, row, i, _current_row)
         }
       }.bind(this), 250);
     }.bind(this), 500*i);
   }
 
   enterPressed() {
-    if(this.state.lock) {
+    if (this.state.lock || this.state.gameOver) {
       return
     }
     const _current_row = this.state.current_row
@@ -104,15 +118,12 @@ class App extends Component {
       const _rows = this.state.rows;
       const row = _rows[_current_row];
       // TODO this animation for keys should be AFTER the animation not before. NBD
-      const _keys = this.state.keys
       this.gameService.checkRowValidity(row);
-      this.gameService.updateKeys(row, _keys);
       for (let i = 0; i < row.length; i ++) {
         this.animateAndSetItem(_rows, row, i, _current_row);
       }
       return this.setState({
         current_row: _current_row + 1,
-        keys: _keys,
         lock: true
       })
     }
@@ -126,7 +137,7 @@ class App extends Component {
   }
 
   keyPressed(letter) {
-    if(this.state.lock) {
+    if (this.state.lock || this.state.gameOver) {
       return
     }
     if (!this.gameService.rowIsComplete(this.state.rows[this.state.current_row])) {

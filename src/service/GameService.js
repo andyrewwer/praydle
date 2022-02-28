@@ -3,7 +3,7 @@ import {Tile} from '../model/Tile';
 import {check_word} from '../utils/short_words.js'
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
-// TODO multiple answers, recommended max 6 letters
+// TODO multiple answers, recommended max 6 letters, real max 7 letters (only up to 7 letter words)
 const answers = [{word: 'GLORY'}]
 
 class GameService {
