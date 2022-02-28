@@ -170,11 +170,13 @@ class App extends Component {
   }
 
   toggleHighContrast() {
-    console.log('toggling')
     const _settings = this.state.settings;
     _settings.highContrast = !_settings.highContrast;
-    // TODO this better
-    document.body.className = _settings.highContrast ? 'constrast-mode' : '';
+    if (_settings.highContrast) {
+      document.body.classList.add('contrast-mode');
+    } else {
+      document.body.classList.remove('contrast-mode');
+    }
     this.setState({
       settings: _settings
     });

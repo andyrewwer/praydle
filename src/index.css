@@ -13,7 +13,7 @@
   --font-size-enter-button: var(--font-size-2)
 }
 
-.constrast-mode {
+.contrast-mode {
   --color-correct: var(--blue-9);
   --color-present: var(--orange-6);
 }
