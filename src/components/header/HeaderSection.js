@@ -9,7 +9,8 @@ class HeaderSection extends Component {
     this.render.bind(this);
   }
 
-// TODO implement buttons lol
+// TODO implement STATISTICS
+// TODO implement settings
   render = () => {
     return (
         <div className="header-container flex-center">

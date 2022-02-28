@@ -24,6 +24,12 @@
   color: var(--gray-6);
 }
 
+.ready-for-click {
+  color: var(--color-correct);
+  font-weight: var(--font-weight-9);
+  font-size: var(--font-size-enter-button);
+}
+
 .key[data-state='absent'] {
   background-color: var(--color-absent);
   color: var(--gray-0);

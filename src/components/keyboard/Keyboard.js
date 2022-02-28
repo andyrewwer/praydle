@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Keyboard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {CONTROL_ICONS} from '../../utils/Enums.js'
+const classNames = require('classnames');
 
 class Keyboard extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class Keyboard extends Component {
             <div className="key flex-center" data-state={this.props.keys['L']} onClick={() => {this.props.keyPressCallback('L')}}> L </div>
           </div>
           <div className="row">
-            <div className="key control-key flex-center" onClick={this.props.enterCallback}> ENTER </div>
+            <div className={classNames('key control-key flex-center', {'ready-for-click': this.props.enterButtonIsEnabled})} onClick={this.props.enterCallback}> ENTER </div>
               <div className="key flex-center" data-state={this.props.keys['Z']} onClick={() => {this.props.keyPressCallback('Z')}}> Z </div>
               <div className="key flex-center" data-state={this.props.keys['X']} onClick={() => {this.props.keyPressCallback('X')}}> X </div>
               <div className="key flex-center" data-state={this.props.keys['C']} onClick={() => {this.props.keyPressCallback('C')}}> C </div>

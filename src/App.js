@@ -9,6 +9,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 
+// TODO save progress
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
@@ -111,15 +112,19 @@ class App extends Component {
     }.bind(this), 500*i);
   }
 
+  enterButtonIsEnabled() {
+    return this.gameService.rowIsComplete(this.state.rows[this.state.current_row]) && this.gameService.wordIsValid(this.state.rows[this.state.current_row]);
+
+  }
+
   enterPressed() {
     if (this.state.lock || this.state.gameOver) {
       return
     }
     const _current_row = this.state.current_row
-    if (this.gameService.rowIsComplete(this.state.rows[this.state.current_row]) && this.gameService.wordIsValid(this.state.rows[this.state.current_row])) {
+    if (this.enterButtonIsEnabled()) {
       const _rows = this.state.rows;
       const row = _rows[_current_row];
-      // TODO this animation for keys should be AFTER the animation not before. NBD
       this.gameService.checkRowValidity(row);
       for (let i = 0; i < row.length; i ++) {
         this.animateAndSetItem(_rows, row, i, _current_row);
@@ -187,7 +192,8 @@ class App extends Component {
         <Keyboard keyPressCallback={this.keyPressed.bind(this)}
             backspaceCallback={this.backspacePressed.bind(this)}
             enterCallback={this.enterPressed.bind(this)}
-            keys={this.state.keys}/>
+            keys={this.state.keys}
+            enterButtonIsEnabled={this.enterButtonIsEnabled()}/>
           <ModalContainer modal={this.state.modal} closeModal={closeModal}/>
       </div>
     );
