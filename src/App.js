@@ -15,7 +15,6 @@ class App extends Component {
   header_icons = [faCog, faQuestionCircle, faChartBar, faBible]
   modal_icons = [faTimes]
 
-// TODO don't allow typing during animation & when game is over
   constructor() {
     super()
     this.render.bind(this);
@@ -29,7 +28,8 @@ class App extends Component {
       keys: this.createEmptyLetters(),
       animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
       current_row: 0,
-      modal: MODALS.INSTRUCTION
+      modal: MODALS.INSTRUCTION,
+      lock: true
     }
   }
 
@@ -49,17 +49,23 @@ class App extends Component {
   }
 
   _handleKeyDown (e) {
-      if (e.keyCode === BACKSPACE_KEY) {
-        this.removeLastItem();
-      } else if (e.keyCode === ENTER_KEY) {
-        this.enterPressed();
-        // check if letter
-      } else if (String.fromCharCode(e.keyCode).toUpperCase() !== String.fromCharCode(e.keyCode).toLowerCase()) {
-        this.keyPressed(String.fromCharCode(e.keyCode).toUpperCase());
-      }
+    if(this.state.lock) {
+      return
+    }
+    if (e.keyCode === BACKSPACE_KEY) {
+      this.removeLastItem();
+    } else if (e.keyCode === ENTER_KEY) {
+      this.enterPressed();
+      // check if letter
+    } else if (String.fromCharCode(e.keyCode).toUpperCase() !== String.fromCharCode(e.keyCode).toLowerCase()) {
+      this.keyPressed(String.fromCharCode(e.keyCode).toUpperCase());
+    }
   }
 
   removeLastItem() {
+    if(this.state.lock) {
+      return
+    }
     this.setState(this.gameService.removeLastItem(this.state));
   }
 
@@ -69,14 +75,20 @@ class App extends Component {
       setTimeout(function() {
         this.setState(this.gameService.continueFlipAnimationAndSetStatus(list, row, i, _current_row));
 
-        if (i === this.state.answerLength - 1 && this.gameService.rowIsCorrect(row)) {
-          for (let j = 0; j < this.state.answerLength; j ++) {
+        if (i === this.state.answerLength - 1) {
+          if (this.gameService.rowIsCorrect(row)) {
+            for (let j = 0; j < this.state.answerLength; j ++) {
+              setTimeout(function() {
+                this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
+              }.bind(this), 450+(150*j));
             setTimeout(function() {
-              this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
-            }.bind(this), 450+(150*j));
-          setTimeout(function() {
-            this.openModal(MODALS.BIBLE);
-          }.bind(this), 450+(150*this.state.answerLength)+500)
+              this.openModal(MODALS.BIBLE);
+            }.bind(this), 450+(150*this.state.answerLength)+500)
+            }
+          } else {
+            this.setState({
+              lock: false
+            });
           }
         }
       }.bind(this), 250);
@@ -84,7 +96,9 @@ class App extends Component {
   }
 
   enterPressed() {
-    console.log('started', new Date().toISOString());
+    if(this.state.lock) {
+      return
+    }
     const _current_row = this.state.current_row
     if (this.gameService.rowIsComplete(this.state.rows[this.state.current_row]) && this.gameService.wordIsValid(this.state.rows[this.state.current_row])) {
       const _rows = this.state.rows;
@@ -96,10 +110,10 @@ class App extends Component {
       for (let i = 0; i < row.length; i ++) {
         this.animateAndSetItem(_rows, row, i, _current_row);
       }
-      console.log('ended', new Date().toISOString());
       return this.setState({
         current_row: _current_row + 1,
-        keys: _keys
+        keys: _keys,
+        lock: true
       })
     }
     // TODO message based either "too small" or "not a real word"
@@ -112,6 +126,9 @@ class App extends Component {
   }
 
   keyPressed(letter) {
+    if(this.state.lock) {
+      return
+    }
     if (!this.gameService.rowIsComplete(this.state.rows[this.state.current_row])) {
       const _rows = this.state.rows;
       this.setState(this.gameService.addItemToRow(_rows, this.state.current_row, letter));
@@ -128,7 +145,8 @@ class App extends Component {
 
   openModal(modal) {
     this.setState({
-      modal: modal
+      modal: modal,
+      lock: true
     })
   }
 
@@ -136,7 +154,8 @@ class App extends Component {
     library.add(this.confirmation_icons, this.header_icons, this.modal_icons);
     let closeModal = () => {
       this.setState({
-        modal: false
+        modal: false,
+        lock: false
       })
     }
 
