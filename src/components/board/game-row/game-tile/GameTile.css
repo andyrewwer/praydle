@@ -5,8 +5,7 @@
 }
 
 .letter {
-  font-size: 2.5rem;
-  font-size: var(--font-size-5);
+  font-size: var(--font-size-tile);
   font-family: var(--font-sans);
   font-weight: var(--font-weight-7);
 

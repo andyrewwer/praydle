@@ -9,6 +9,7 @@
   --tile-size: 3.8rem;
   --letter-size: 2.5rem;
   --color-title: brown;
+  --font-size-tile: 2.5rem;
 }
 
 .nightmode {
@@ -37,9 +38,35 @@ code {
   align-items: center;
 }
 
-/* TODO also fix screen size */
-/* TODO media and resizing the content */
-@media screen and (max-height: 480px)  {
+/* TODO modals should scroll down more on mobile (e.g. instruction mobile) */
+/* TODO spacing between elements to look better instead of static */
+@media screen and (max-width: 460px)  {
   :root {
+    --letter-size: 2rem;
+    --tile-size: 3.5rem;
+    --game-max-width: 460px;
+  }
+}
+
+@media screen and (max-width: 400px)  {
+  :root {
+    --letter-size: 1.7rem;
+    --game-max-width: 400px;
+    --tile-size: 2.8rem;
+    --font-size-tile: 2rem;
+  }
+}
+
+@media screen and (max-width: 370px)  {
+  :root {
+    --letter-size: 1.5rem;
+    --game-max-width: 370px;
+  }
+}
+
+@media screen and (max-width: 350px)  {
+  :root {
+    --letter-size: 1.25rem;
+    --game-max-width: 350px;
   }
 }

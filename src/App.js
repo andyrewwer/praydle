@@ -16,7 +16,7 @@ class App extends Component {
   modal_icons = [faTimes]
 
   constructor() {
-    super()
+    super();
     this.render.bind(this);
     this.gameService = new GameService();
     this.removeLastItem.bind(this);
@@ -43,6 +43,8 @@ class App extends Component {
 
   componentDidMount() {
     document.addEventListener("keydown", this._handleKeyDown.bind(this));
+    document.body.style.overflow = "hidden";
+    document.body.style.width = "100%";
   }
 
   componentWillUnmount() {

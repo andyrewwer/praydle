@@ -18,7 +18,7 @@
 }
 
 .control-key {
-  width: var(--font-size-7);
+  width: var(--font-size-fluid-3);
   letter-spacing: var(--font-letterspacing-0);
   font-size: var(--font-size-0);
   color: var(--gray-6);

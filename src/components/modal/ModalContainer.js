@@ -11,7 +11,6 @@ export default class ModalContainer extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props)
   }
   closeModal() {
     this.props.closeModal();
