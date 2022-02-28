@@ -1,0 +1,38 @@
+.settings-container {
+  min-width: 310px;
+}
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0px;
+}
+
+.setting-first {
+  margin-top: -15px;
+}
+.description {
+
+}
+
+.setting-title {
+  margin: 0;
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-5);
+  font-family: var(--font-sans);
+}
+
+.setting-subtitle {
+  margin: 0;
+  color: var(--gray-7);
+  font-size: var(--font-size-0)
+}
+
+
+.react-toggle--checked .react-toggle-track {
+  background-color: var(--color-correct);
+}
+
+.email-link {
+  color: var(--gray-7);
+}

@@ -31,7 +31,10 @@ class App extends Component {
       current_row: 0,
       modal: MODALS.INSTRUCTION,
       lock: true,
-      gameOver: false
+      gameOver: false,
+      settings: {
+        highContrast: false
+      }
     }
   }
 
@@ -44,8 +47,6 @@ class App extends Component {
 
   componentDidMount() {
     document.addEventListener("keydown", this._handleKeyDown.bind(this));
-    document.body.style.overflow = "hidden";
-    document.body.style.width = "100%";
   }
 
   componentWillUnmount() {
@@ -168,6 +169,17 @@ class App extends Component {
     })
   }
 
+  toggleHighContrast() {
+    console.log('toggling')
+    const _settings = this.state.settings;
+    _settings.highContrast = !_settings.highContrast;
+    // TODO this better
+    document.body.className = _settings.highContrast ? 'constrast-mode' : '';
+    this.setState({
+      settings: _settings
+    });
+  }
+
   render = () => {
     library.add(this.confirmation_icons, this.header_icons, this.modal_icons);
     let closeModal = () => {
@@ -177,24 +189,16 @@ class App extends Component {
       })
     }
 
-    let openInstructionModal = () => {
-      this.openModal(MODALS.INSTRUCTION);
-    }
-
-    let openBibleModal = () => {
-      this.openModal(MODALS.BIBLE);
-    }
-
     return (
-      <div className="App nightmode">
-        <HeaderSection showInstructionModal={openInstructionModal} showBibleModal={openBibleModal}/>
+      <div className="App">
+        <HeaderSection openModal={this.openModal.bind(this)}/>
         <BoardSection rows={this.state.rows} animations={this.state.animations} answerLength={this.state.answerLength}/>
         <Keyboard keyPressCallback={this.keyPressed.bind(this)}
             backspaceCallback={this.backspacePressed.bind(this)}
             enterCallback={this.enterPressed.bind(this)}
             keys={this.state.keys}
             enterButtonIsEnabled={this.enterButtonIsEnabled()}/>
-          <ModalContainer modal={this.state.modal} closeModal={closeModal}/>
+          <ModalContainer modal={this.state.modal} closeModal={closeModal} highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}/>
       </div>
     );
   }
