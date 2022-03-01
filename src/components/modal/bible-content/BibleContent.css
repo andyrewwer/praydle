@@ -17,3 +17,7 @@
 .bottom-border {
   border-bottom: 1px solid var(--gray-4);
 }
+
+.bible-container {
+  min-width: 300px;
+}

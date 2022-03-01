@@ -200,7 +200,9 @@ class App extends Component {
             enterCallback={this.enterPressed.bind(this)}
             keys={this.state.keys}
             enterButtonIsEnabled={this.enterButtonIsEnabled()}/>
-          <ModalContainer modal={this.state.modal} closeModal={closeModal} highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}/>
+          <ModalContainer modal={this.state.modal} closeModal={closeModal}
+            highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}
+            answer={this.gameService.getTodaysAnswerObject()}/>
       </div>
     );
   }

@@ -1,10 +1,13 @@
 import {ANSWER_TYPE, ANIMATION_TYPE} from '../utils/Enums';
 import {Tile} from '../model/Tile';
 import {check_word} from '../utils/short_words.js'
+import answers from '../assets/answers.json'
+
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
-// TODO multiple answers, recommended max 6 letters, real max 7 letters (only up to 7 letter words)
-const answers = [{word: 'GLORY'}]
+// TODO add more answers to answers.json
+// TODO think of format, just verse & number or also encouragement?
+// TODO themes of the various weeks?
 
 class GameService {
 
@@ -35,7 +38,11 @@ class GameService {
   }
 
   getTodaysAnswer() {
-    return answers[0].word;
+    return this.getTodaysAnswerObject().word;
+  }
+
+  getTodaysAnswerObject() {
+    return answers[0];
   }
 
   checkRowValidity(row) {

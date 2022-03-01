@@ -19,7 +19,7 @@ export default class ModalContainer extends Component {
       case MODALS.INSTRUCTION:
         return <InstructionContent closeModal={this.closeModal.bind(this)}/>
       case MODALS.BIBLE:
-        return <BibleContent closeModal={this.closeModal.bind(this)}/>
+        return <BibleContent closeModal={this.closeModal.bind(this)} answer={this.props.answer}/>
       case MODALS.SETTINGS:
         return <SettingsContent closeModal={this.closeModal.bind(this)} highContrast={this.props.highContrast} toggleHighContrast={this.props.toggleHighContrast}/>
     }
