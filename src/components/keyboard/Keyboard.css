@@ -8,8 +8,8 @@
   margin-right: 6px;
   background-color: var(--keyboard-background);
   padding: 5px;
-  aspect-ratio: var(--ratio-portrait);
-  block-size: var(--letter-size);
+  height: var(--letter-size-height);
+  width: var(--letter-size-width);
   border-radius: var(--radius-2);
   font-size: var(--font-size-3);
   font-family: var(--font-sans);

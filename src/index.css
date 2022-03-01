@@ -7,7 +7,8 @@
   --color-correct: var(--green-7);
   --color-absent: var(--gray-6);
   --tile-size: 3.8rem;
-  --letter-size: 2.5rem;
+  --letter-size-height: 3rem;
+  --letter-size-width: 1.9rem;
   --color-title: brown;
   --font-size-tile: 2.5rem;
   --font-size-enter-button: var(--font-size-2)
@@ -48,7 +49,8 @@ code {
 /* TODO spacing between elements to look better instead of static */
 @media screen and (max-width: 475px)  {
   :root {
-    --letter-size: 2rem;
+    --letter-size-height: 3rem;
+    --letter-size-width: 1.5rem;
     --tile-size: 3.5rem;
     --game-max-width: 475px;
     --font-size-enter-button: 0.88rem;
@@ -57,7 +59,8 @@ code {
 
 @media screen and (max-width: 405px)  {
   :root {
-    --letter-size: 1.7rem;
+    --letter-size-height: 2.75rem;
+    --letter-size-width: 1.3rem;
     --game-max-width: 400px;
     --tile-size: 2.8rem;
     --font-size-tile: 2rem;
@@ -67,7 +70,8 @@ code {
 
 @media screen and (max-width: 370px)  {
   :root {
-    --letter-size: 1.5rem;
+    --letter-size-height: 2.5rem;
+    --letter-size-width: 1.16rem;
     --game-max-width: 370px;
     --font-size-enter-button: 0.75rem;
   }
@@ -75,7 +79,8 @@ code {
 
 @media screen and (max-width: 350px)  {
   :root {
-    --letter-size: 1.25rem;
+    --letter-size-height: 2.25rem;
+    --letter-size-width: 0.95rem;
     --game-max-width: 350px;
   }
 }
