@@ -6,6 +6,7 @@ import {MODALS} from '../../utils/Enums.js'
 import InstructionContent from './instruction-content/InstructionContent'
 import BibleContent from './bible-content/BibleContent'
 import SettingsContent from './settings-content/SettingsContent'
+import StatisticsContent from './statistics-content/StatisticsContent'
 
 // TODO prevent scroll behind modal
 export default class ModalContainer extends Component {
@@ -22,6 +23,8 @@ export default class ModalContainer extends Component {
         return <BibleContent closeModal={this.closeModal.bind(this)} answer={this.props.answer}/>
       case MODALS.SETTINGS:
         return <SettingsContent closeModal={this.closeModal.bind(this)} highContrast={this.props.highContrast} toggleHighContrast={this.props.toggleHighContrast}/>
+      case MODALS.STATISTICS:
+        return <StatisticsContent />
     }
   }
 

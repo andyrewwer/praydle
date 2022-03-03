@@ -1,7 +1,8 @@
 export const MODALS = {
   INSTRUCTION: 'instruction',
   BIBLE: 'bible',
-  SETTINGS: 'settings'
+  SETTINGS: 'settings',
+  STATISTICS: 'statistics'
 }
 
 export const CONTROL_ICONS = {

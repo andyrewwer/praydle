@@ -1,6 +1,3 @@
-/* TODO Figure out how to do a "night-mode" / "color-blind" mode cause that seems fun  But really having global themes*/
-/* TODO figure out right colors */
-
 .App {
   max-width: var(--game-max-width);
   margin: 0 auto;

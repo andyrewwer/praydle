@@ -9,7 +9,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 
-// TODO save progress
+// TODO save progress to localStorage
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
@@ -21,10 +21,10 @@ class App extends Component {
     this.render.bind(this);
     this.gameService = new GameService();
     this.removeLastItem.bind(this);
-    const current_answer = this.gameService.getTodaysAnswer();
+    this.current_answer = this.gameService.getTodaysAnswerObject();
 
     this.state = {
-      answerLength: current_answer.length,
+      answerLength: this.current_answer['word'].length,
       rows: [[], [], [], [], [], []],
       keys: this.createEmptyLetters(),
       animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
@@ -202,7 +202,7 @@ class App extends Component {
             enterButtonIsEnabled={this.enterButtonIsEnabled()}/>
           <ModalContainer modal={this.state.modal} closeModal={closeModal}
             highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}
-            answer={this.gameService.getTodaysAnswerObject()}/>
+            answer={this.current_answer}/>
       </div>
     );
   }

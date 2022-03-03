@@ -4,7 +4,7 @@ import './SettingsContent.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Toggle from 'react-toggle'
 
-// TODO more settings?
+// TODO more settings -- nightmode, hardmode, ???
 // TODO more formal email
 export default class SettingsContent extends Component {
 
@@ -12,7 +12,7 @@ export default class SettingsContent extends Component {
     return (
       <div className="settings-container">
       <FontAwesomeIcon onClick={this.props.closeModal} icon={"times"} className={'close-icon'}/>
-        <h4 style={{textAlign: "center", paddingBottom: "10px"}}> SETTINGS </h4>
+        <h4 className="modal-title" style={{textAlign: "center", marginBottom: "15px"}}> SETTINGS </h4>
         <div className="setting bottom-border setting-first">
           <div className="description">
             <h5 className="setting-title">High Contrast Mode</h5>

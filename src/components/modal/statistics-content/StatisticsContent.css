@@ -1,0 +1,32 @@
+.statistics-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 310px;
+}
+
+.statistics-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 310px;
+  margin-top: 10px;
+}
+
+.statistic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 10px;
+  flex: 1;
+}
+.statistic p {
+  font-size: var(--font-size-4);
+  margin: 0;
+  font-variant-numeric: proportional-nums;
+}
+
+.statistic-title {
+  font-size: var(--font-size-00);
+}

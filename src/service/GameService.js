@@ -5,11 +5,16 @@ import answers from '../assets/answers.json'
 
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
+export const FIRST_DATE = new Date('March 2, 2022');
+export const MILLISECONDS_IN_A_DAY = 24*60*60*1000
 // TODO add more answers to answers.json
 // TODO think of format, just verse & number or also encouragement?
 // TODO themes of the various weeks?
+// TODO handle when the week is empty.
 
 class GameService {
+
+  skip_days = 7;
 
   removeLastItem(state) {
     const _current_row = state.current_row
@@ -19,7 +24,7 @@ class GameService {
   }
 
   rowIsComplete(row) {
-    return row.length === this.getTodaysAnswer().length
+    return row.length === this.getTodaysAnswerObject()['word'].length
   }
 
   wordIsValid(row) {
@@ -37,16 +42,26 @@ class GameService {
     return counts
   }
 
-  getTodaysAnswer() {
-    return this.getTodaysAnswerObject().word;
+  getTodaysDate() {
+    return new Date(new Date().getTime() + this.skip_days*MILLISECONDS_IN_A_DAY)
+  }
+
+  getDaysSinceFirstDay() {
+    return Math.floor((this.getTodaysDate().getTime() - FIRST_DATE.getTime()) / MILLISECONDS_IN_A_DAY);
+  }
+
+  getThisWeeksAnswers() {
+    let week = Math.floor(this.getDaysSinceFirstDay() / 7)
+    return answers[week]
   }
 
   getTodaysAnswerObject() {
-    return answers[0];
+    let day = this.getDaysSinceFirstDay()
+    return this.getThisWeeksAnswers()['week'][day % 7];
   }
 
   checkRowValidity(row) {
-    let current_answer = this.getTodaysAnswer();
+    let current_answer = this.getTodaysAnswerObject()['word'];
     let remaining_letters_in_guess = [];
     let remaining_letters_in_answer = [];
     for (let i = 0; i < row.length; i ++) {
