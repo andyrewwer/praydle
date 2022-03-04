@@ -20,14 +20,18 @@ class App extends Component {
     this.gameService = new GameService();
     this.todays_answer = this.gameService.getTodaysAnswerObject();
     this.weeks_answer = this.gameService.getThisWeeksAnswersObject();
-
+    let modalShown = localStorage.getItem('modalShown');
     this.state = {
-      modal: MODALS.INSTRUCTION,
+      modal: !!modalShown ? null : MODALS.INSTRUCTION,
       active_puzzle: PUZZLE_TYPE.DAILY,
       settings: {
         highContrast: false
       }
     }
+  }
+
+  componentDidMount() {
+    localStorage.setItem('modalShown', true)
   }
 
   restoredHistory(puzzle_type) {
@@ -47,7 +51,6 @@ class App extends Component {
           // check was the last save date "this week"
           // TODO validate this if this works
           const daysIntoTheWeek = this.gameService.getDaysSinceFirstDay() % 7;
-          console.log(daysSinceLastSave, daysIntoTheWeek)
           if (daysSinceLastSave > 6 || daysIntoTheWeek < daysSinceLastSave) {
             return null
           } else {

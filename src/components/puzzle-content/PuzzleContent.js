@@ -16,8 +16,6 @@ export default class PuzzleContent extends Component {
     super(props);
     this.gameService = this.props.gameService;
     this.current_answer = this.props.answer;
-
-
     this.state = this.createInitialState()
   }
 
