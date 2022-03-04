@@ -107,7 +107,12 @@ class GameService {
   }
 
   rowIsCorrect(row) {
-    return row[0].status === ANSWER_TYPE.CORRECT && row[1].status === ANSWER_TYPE.CORRECT && row[2].status === ANSWER_TYPE.CORRECT
+    for (let i = 0; i < row.length; i++) {
+      if (row[i].status !== ANSWER_TYPE.CORRECT) {
+        return false
+      }
+    }
+    return true
   }
 
   performBounceAnimation(list, row, j, current_row) {
