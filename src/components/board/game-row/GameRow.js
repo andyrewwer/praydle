@@ -16,6 +16,7 @@ class GameRow extends Component {
     }
     return tiles
   }
+  
   render = () => {
     return (
       <div className="game-row" style={{gridTemplateColumns: "repeat(" + this.props.answerLength + ", var(--tile-size))"}} data-animation={this.props.animation}>

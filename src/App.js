@@ -4,163 +4,36 @@ import HeaderSection from './components/header/HeaderSection.js';
 import BoardSection from './components/board/BoardSection.js';
 import Keyboard from './components/keyboard/Keyboard.js';
 import {ENTER_KEY, BACKSPACE_KEY, GameService} from './service/GameService';
-import {ANIMATION_TYPE, MODALS} from './utils/Enums';
+import {ANIMATION_TYPE, MODALS, PUZZLE_TYPE} from './utils/Enums';
+import {createEmptyKeyboard, handleKeyDown} from './utils/GameUtils';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible} from '@fortawesome/free-solid-svg-icons';
+import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible, faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
+import PuzzleContent from './components/puzzle-content/PuzzleContent'
 
 // TODO save progress to localStorage
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
-  header_icons = [faCog, faQuestionCircle, faChartBar, faBible]
+  header_icons = [faCog, faQuestionCircle, faChartBar, faBible, faCalendarAlt]
   modal_icons = [faTimes]
 
   constructor() {
     super();
     this.render.bind(this);
     this.gameService = new GameService();
-    this.removeLastItem.bind(this);
-    this.current_answer = this.gameService.getTodaysAnswerObject();
+    this.todays_answer = this.gameService.getTodaysAnswerObject();
+    this.weeks_answer = this.gameService.getThisWeeksAnswersObject();
 
     this.state = {
-      answerLength: this.current_answer['word'].length,
-      rows: [[], [], [], [], [], []],
-      keys: this.createEmptyLetters(),
-      animations: [ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE, ANIMATION_TYPE.IDLE],
-      current_row: 0,
       modal: MODALS.INSTRUCTION,
-      lock: true,
-      gameOver: false,
+      active_puzzle: PUZZLE_TYPE.DAILY,
       settings: {
         highContrast: false
       }
     }
   }
 
-  createEmptyLetters() {
-    return {A: 'none', B: 'none', C: 'none', D: 'none', E: 'none', F: 'none', G: 'none',
-            H: 'none', I: 'none', J: 'none', K: 'none', L: 'none', M: 'none', N: 'none',
-            O: 'none', P: 'none', Q: 'none', R: 'none', S: 'none', T: 'none', U: 'none',
-            V: 'none', W: 'none', X: 'none', Y: 'none', Z: 'none'}
-  }
-
-  componentDidMount() {
-    document.addEventListener("keydown", this._handleKeyDown.bind(this));
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this._handleKeyDown.bind(this));
-  }
-
-  _handleKeyDown (e) {
-    if (this.state.lock || this.state.gameOver) {
-      return
-    }
-    if (e.keyCode === BACKSPACE_KEY) {
-      this.removeLastItem();
-    } else if (e.keyCode === ENTER_KEY) {
-      this.enterPressed();
-      // check if letter
-    } else if (String.fromCharCode(e.keyCode).toUpperCase() !== String.fromCharCode(e.keyCode).toLowerCase()) {
-      this.keyPressed(String.fromCharCode(e.keyCode).toUpperCase());
-    }
-  }
-
-  removeLastItem() {
-    if (this.state.lock || this.state.gameOver) {
-      return
-    }
-    this.setState(this.gameService.removeLastItem(this.state));
-  }
-
-  handleRowFinishedAnimating(list, row, i, _current_row) {
-    if (this.gameService.rowIsCorrect(row)) {
-      for (let j = 0; j < this.state.answerLength; j ++) {
-        setTimeout(function() {
-          this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
-        }.bind(this), 450+(150*j));
-        setTimeout(function() {
-          this.openModal(MODALS.BIBLE);
-        }.bind(this), 450+(150*this.state.answerLength)+500)
-      }
-      this.setState({
-        gameOver: true
-      });
-    } else {
-      this.setState({
-        lock: false,
-      });
-    }
-    const _keys = this.state.keys
-    this.gameService.updateKeys(row, _keys);
-    this.setState({
-      keys: _keys
-    });
-
-
-  }
-
-  animateAndSetItem(list, row, i, _current_row) {
-    setTimeout(function() {
-      this.setState(this.gameService.startFlipAnimation(list, row, i, _current_row));
-      setTimeout(function() {
-        this.setState(this.gameService.continueFlipAnimationAndSetStatus(list, row, i, _current_row));
-        if (i === this.state.answerLength - 1) {
-          this.handleRowFinishedAnimating(list, row, i, _current_row)
-        }
-      }.bind(this), 250);
-    }.bind(this), 500*i);
-  }
-
-  enterButtonIsEnabled() {
-    return this.gameService.rowIsComplete(this.state.rows[this.state.current_row]) && this.gameService.wordIsValid(this.state.rows[this.state.current_row]);
-
-  }
-
-  enterPressed() {
-    if (this.state.lock || this.state.gameOver) {
-      return
-    }
-    const _current_row = this.state.current_row
-    if (this.enterButtonIsEnabled()) {
-      const _rows = this.state.rows;
-      const row = _rows[_current_row];
-      this.gameService.checkRowValidity(row);
-      for (let i = 0; i < row.length; i ++) {
-        this.animateAndSetItem(_rows, row, i, _current_row);
-      }
-      return this.setState({
-        current_row: _current_row + 1,
-        lock: true
-      })
-    }
-    // TODO message based either "too small" or "not a real word"
-    const _animations = this.state.animations
-    this.setState(this.gameService.performShakeAnimation(_animations, _current_row));
-    setTimeout(function() {
-      _animations[_current_row] = ANIMATION_TYPE.IDLE;
-      this.setState({animations: _animations});
-    }.bind(this), 200);
-  }
-
-  keyPressed(letter) {
-    if (this.state.lock || this.state.gameOver) {
-      return
-    }
-    if (!this.gameService.rowIsComplete(this.state.rows[this.state.current_row])) {
-      const _rows = this.state.rows;
-      this.setState(this.gameService.addItemToRow(_rows, this.state.current_row, letter));
-      setTimeout(function() {
-        _rows[this.state.current_row].at(-1).animation = ANIMATION_TYPE.IDLE
-        this.setState({rows: _rows});
-      }.bind(this), 100);
-    }
-  }
-
-  backspacePressed() {
-    this.removeLastItem();
-  }
 
   openModal(modal) {
     this.setState({
@@ -191,18 +64,24 @@ class App extends Component {
       })
     }
 
+    let changeActivePuzzle = () => {
+      let puzzle = this.state.active_puzzle === PUZZLE_TYPE.DAILY ? PUZZLE_TYPE.WEEKLY : PUZZLE_TYPE.DAILY;
+      this.setState({
+        active_puzzle: puzzle
+      })
+    }
+// TODO freeze second-third rows
     return (
       <div className="App">
-        <HeaderSection openModal={this.openModal.bind(this)}/>
-        <BoardSection rows={this.state.rows} animations={this.state.animations} answerLength={this.state.answerLength}/>
-        <Keyboard keyPressCallback={this.keyPressed.bind(this)}
-            backspaceCallback={this.backspacePressed.bind(this)}
-            enterCallback={this.enterPressed.bind(this)}
-            keys={this.state.keys}
-            enterButtonIsEnabled={this.enterButtonIsEnabled()}/>
-          <ModalContainer modal={this.state.modal} closeModal={closeModal}
-            highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}
-            answer={this.current_answer}/>
+        <HeaderSection openModal={this.openModal.bind(this)} changeActivePuzzle={changeActivePuzzle}/>
+        {this.state.active_puzzle === PUZZLE_TYPE.DAILY &&
+        <PuzzleContent gameService={this.gameService} answer={this.todays_answer} lock={this.state.lock}/>}
+        {this.state.active_puzzle === PUZZLE_TYPE.WEEKLY &&
+        <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} labels={['3/28', '3/29', '3/30', '3/31', '4/1', '4/2', '4/3']}/>}
+
+        <button onClick={changeActivePuzzle}> change puzzle</button>
+        <ModalContainer modal={this.state.modal} closeModal={closeModal}
+            highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}/>
       </div>
     );
   }

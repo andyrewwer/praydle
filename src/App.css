@@ -1,6 +1,4 @@
 .App {
-  max-width: var(--game-max-width);
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;

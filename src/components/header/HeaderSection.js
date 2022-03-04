@@ -13,10 +13,11 @@ class HeaderSection extends Component {
     return (
         <div className="header-container flex-center">
           <div className="hint" onClick={() => {this.props.openModal(MODALS.INSTRUCTION)}}> <FontAwesomeIcon icon={HEADER_ICONS.HINT.iconName} className={'header-icon'}/></div>
+          <div className="settings" onClick={() => {this.props.openModal(MODALS.SETTINGS)}}> <FontAwesomeIcon icon={HEADER_ICONS.SETTINGS.iconName} className={'header-icon'}/></div>
           <div className="title"> <span className="title-color-span">PRAY</span>DLE </div>
           <div className="bible" onClick={() => {this.props.openModal(MODALS.BIBLE)}}> <FontAwesomeIcon icon={HEADER_ICONS.BIBLE.iconName} className={'header-icon'}/></div>
           <div className="statistics" onClick={() => {this.props.openModal(MODALS.STATISTICS)}}> <FontAwesomeIcon icon={HEADER_ICONS.STATISTICS.iconName} className={'header-icon'}/></div>
-          <div className="settings" onClick={() => {this.props.openModal(MODALS.SETTINGS)}}> <FontAwesomeIcon icon={HEADER_ICONS.SETTINGS.iconName} className={'header-icon'}/></div>
+          <div className="calendar" onClick={() => {this.props.changeActivePuzzle()}}> <FontAwesomeIcon icon={HEADER_ICONS.WEEKLY_PUZZLE.iconName} className={'header-icon'}/></div>
         </div>
     )}
 }

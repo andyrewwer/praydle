@@ -13,6 +13,9 @@ export default class InstructionContent extends Component {
       present: ANSWER_TYPE.TBD,
       absent: ANSWER_TYPE.TBD,
     }
+  }
+
+  componentDidMount() {
     this.animate();
   }
 

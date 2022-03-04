@@ -32,6 +32,10 @@ export const HEADER_ICONS = {
   BIBLE: {
     iconName: 'bible',
     color: 'none'
+  },
+  WEEKLY_PUZZLE: {
+    iconName: 'calendar-alt',
+    color: 'none'
   }
 }
 
@@ -51,4 +55,9 @@ export const ANIMATION_TYPE = {
   FLIP_OUT: 'flip-out',
   BOUNCE: 'bounce',
   SHAKE: 'shake'
+}
+
+export const PUZZLE_TYPE = {
+  DAILY: 'daily',
+  WEEKLY: 'weekly'
 }

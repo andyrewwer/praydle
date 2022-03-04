@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './BoardSection.css';
 import GameRow from './game-row/GameRow';
+const classNames = require('classnames');
 
 class BoardSection extends Component {
   constructor(props) {
@@ -8,15 +9,31 @@ class BoardSection extends Component {
     this.render.bind(this);
   }
 
+  createGameRow() {
+    var row = [];
+    if (!!this.props.labels) {
+      for (let i = 0; i < this.props.rows.length; i++) {
+        row.push(
+          <React.Fragment key={i}>
+            <div className="gameRowLabel flex-center">{this.props.labels[i]}</div>
+            <GameRow row={this.props.rows[i]} animation={this.props.animations[i]} answerLength={this.props.answerLength}/>
+          </React.Fragment>)
+      }
+    }
+    else {
+      for (let i = 0; i < this.props.rows.length; i++) {
+        row.push(
+          <GameRow key={i} row={this.props.rows[i]} animation={this.props.animations[i]} answerLength={this.props.answerLength}/>
+        )
+      }
+    }
+    return row
+  }
+
   render = () => {
     return (
-      <div className="board">
-        <GameRow row={this.props.rows[0]} animation={this.props.animations[0]} answerLength={this.props.answerLength}/>
-        <GameRow row={this.props.rows[1]} animation={this.props.animations[1]} answerLength={this.props.answerLength}/>
-        <GameRow row={this.props.rows[2]} animation={this.props.animations[2]} answerLength={this.props.answerLength}/>
-        <GameRow row={this.props.rows[3]} animation={this.props.animations[3]} answerLength={this.props.answerLength}/>
-        <GameRow row={this.props.rows[4]} animation={this.props.animations[4]} answerLength={this.props.answerLength}/>
-        <GameRow row={this.props.rows[5]} animation={this.props.animations[5]} answerLength={this.props.answerLength}/>
+      <div className={classNames('board', {'board-with-label': !!this.props.labels})} style={{gridTemplateRows: "repeat(" + this.props.rows.length + ", var(--tile-size))"}}>
+        {this.createGameRow()}
       </div>
     )}
   }

@@ -5,7 +5,7 @@ import answers from '../assets/answers.json'
 
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
-export const FIRST_DATE = new Date('March 2, 2022');
+export const FIRST_DATE = new Date('March 3, 2022');
 export const MILLISECONDS_IN_A_DAY = 24*60*60*1000
 // TODO add more answers to answers.json
 // TODO think of format, just verse & number or also encouragement?
@@ -14,7 +14,7 @@ export const MILLISECONDS_IN_A_DAY = 24*60*60*1000
 
 class GameService {
 
-  skip_days = 7;
+  skip_days = 0;
 
   removeLastItem(state) {
     const _current_row = state.current_row
@@ -23,8 +23,8 @@ class GameService {
     return {rows: list};
   }
 
-  rowIsComplete(row) {
-    return row.length === this.getTodaysAnswerObject()['word'].length
+  rowIsComplete(row, answer) {
+    return !!row && row.length === answer.length
   }
 
   wordIsValid(row) {
@@ -32,8 +32,7 @@ class GameService {
     for (let i = 0; i < row.length; i++) {
       word += row[i].letter
     }
-    let fact = check_word(word)
-    return fact
+    return check_word(word)
   }
 
   _countsInSet(row) {
@@ -50,18 +49,18 @@ class GameService {
     return Math.floor((this.getTodaysDate().getTime() - FIRST_DATE.getTime()) / MILLISECONDS_IN_A_DAY);
   }
 
-  getThisWeeksAnswers() {
+  getThisWeeksAnswersObject() {
     let week = Math.floor(this.getDaysSinceFirstDay() / 7)
     return answers[week]
   }
 
   getTodaysAnswerObject() {
     let day = this.getDaysSinceFirstDay()
-    return this.getThisWeeksAnswers()['week'][day % 7];
+    return this.getThisWeeksAnswersObject()['week'][day % 7];
   }
 
-  checkRowValidity(row) {
-    let current_answer = this.getTodaysAnswerObject()['word'];
+  checkRowValidity(row, answer) {
+    let current_answer = answer;
     let remaining_letters_in_guess = [];
     let remaining_letters_in_answer = [];
     for (let i = 0; i < row.length; i ++) {
