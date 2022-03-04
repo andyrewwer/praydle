@@ -5,6 +5,8 @@ import BoardSection from '../board/BoardSection.js';
 import Keyboard from '../keyboard/Keyboard.js';
 import {ENTER_KEY, BACKSPACE_KEY, GameService} from '../../service/GameService';
 import {ANIMATION_TYPE, MODALS} from '../../utils/Enums';
+import {PUZZLE_TYPE} from '../../utils/Enums';
+
 import {createEmptyKeyboard, handleKeyDown} from '../../utils/GameUtils';
 
 // TODO only allow one per day
@@ -15,15 +17,35 @@ export default class PuzzleContent extends Component {
     this.gameService = this.props.gameService;
     this.current_answer = this.props.answer;
 
-    this.state = {
-      answerLength: this.current_answer['word'].length,
-      rows:[...Array(6)].map(e => []),
-      keys: createEmptyKeyboard(),
-      animations: [...Array(6)].map(e => ANIMATION_TYPE.IDLE),
-      current_row: 0,
-      lock: false,
-      gameOver: false,
+
+    this.state = this.createInitialState()
+  }
+
+  createInitialState() {
+    // TODO animate dynamically?
+    if (!!this.props.history) {
+      return this.props.history;
+    } else {
+      return {
+        answerLength: this.current_answer['word'].length,
+        rows:[...Array(this.getSizeForPuzzleType(this.props.puzzleType))].map(e => []),
+        keys: createEmptyKeyboard(),
+        animations: [...Array(this.getSizeForPuzzleType(this.props.puzzleType))].map(e => ANIMATION_TYPE.IDLE),
+        current_row: 0,
+        lock: false,
+        gameOver: false,
+      }
     }
+
+  }
+
+  getSizeForPuzzleType(puzzleType) {
+    if (puzzleType === PUZZLE_TYPE.DAILY) {
+      return 6;
+    } else if (puzzleType === PUZZLE_TYPE.WEEKLY) {
+      return 7;
+    }
+
   }
 
   componentDidMount() {
@@ -88,7 +110,9 @@ export default class PuzzleContent extends Component {
     this.gameService.updateKeys(row, _keys);
     this.setState({
       keys: _keys
-    });
+    }, (() => {
+      this.props.saveState(this.props.puzzleType, this.state);
+    }));
   }
 
   enterPressed() {

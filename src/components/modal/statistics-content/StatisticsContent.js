@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // TODO Finish this view
 // TODO share button
+// TODO save and share some statistics (like games won, streak maybe, etc)
 export default class StatisticsContent extends Component {
 
   render () {

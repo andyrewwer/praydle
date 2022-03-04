@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import HeaderSection from './components/header/HeaderSection.js';
-import BoardSection from './components/board/BoardSection.js';
-import Keyboard from './components/keyboard/Keyboard.js';
-import {ENTER_KEY, BACKSPACE_KEY, GameService} from './service/GameService';
-import {ANIMATION_TYPE, MODALS, PUZZLE_TYPE} from './utils/Enums';
-import {createEmptyKeyboard, handleKeyDown} from './utils/GameUtils';
+import {GameService, MILLISECONDS_IN_A_DAY} from './service/GameService';
+import {MODALS, PUZZLE_TYPE} from './utils/Enums';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible, faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 import PuzzleContent from './components/puzzle-content/PuzzleContent'
 
-// TODO save progress to localStorage
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
@@ -34,6 +30,32 @@ class App extends Component {
     }
   }
 
+  restoredHistory(puzzle_type) {
+    const history = JSON.parse(localStorage.getItem(puzzle_type));
+    const today = this.gameService.getTodaysDate().getTime();
+    if (!!history) {
+      const daysSinceLastSave = Math.floor((today - history['date']) / MILLISECONDS_IN_A_DAY)
+      switch (puzzle_type) {
+        case PUZZLE_TYPE.DAILY:
+          if (daysSinceLastSave === 0) {
+            return history;
+          } else {
+            return null
+          }
+        case PUZZLE_TYPE.WEEKLY:
+          // check how many days since the week started
+          // check was the last save date "this week"
+          // TODO validate this if this works
+          const daysIntoTheWeek = this.gameService.getDaysSinceFirstDay() % 7;
+          console.log(daysSinceLastSave, daysIntoTheWeek)
+          if (daysSinceLastSave > 6 || daysIntoTheWeek < daysSinceLastSave) {
+            return null
+          } else {
+            return history
+          }
+      }
+    }
+  }
 
   openModal(modal) {
     this.setState({
@@ -53,6 +75,11 @@ class App extends Component {
     this.setState({
       settings: _settings
     });
+  }
+
+  saveState(type, state) {
+    state['date'] = this.gameService.getTodaysDate().getTime();
+    localStorage.setItem(type, JSON.stringify(state));
   }
 
   render = () => {
@@ -75,11 +102,9 @@ class App extends Component {
       <div className="App">
         <HeaderSection openModal={this.openModal.bind(this)} changeActivePuzzle={changeActivePuzzle}/>
         {this.state.active_puzzle === PUZZLE_TYPE.DAILY &&
-        <PuzzleContent gameService={this.gameService} answer={this.todays_answer} lock={this.state.lock}/>}
+        <PuzzleContent gameService={this.gameService} answer={this.todays_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.DAILY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.DAILY)}/>}
         {this.state.active_puzzle === PUZZLE_TYPE.WEEKLY &&
-        <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} labels={['3/28', '3/29', '3/30', '3/31', '4/1', '4/2', '4/3']}/>}
-
-        <button onClick={changeActivePuzzle}> change puzzle</button>
+        <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={['3/28', '3/29', '3/30', '3/31', '4/1', '4/2', '4/3']}/>}
         <ModalContainer modal={this.state.modal} closeModal={closeModal}
             highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}/>
       </div>
