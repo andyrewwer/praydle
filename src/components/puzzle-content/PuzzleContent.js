@@ -7,7 +7,7 @@ import {PUZZLE_TYPE} from '../../utils/Enums';
 
 import {createEmptyKeyboard, handleKeyDown} from '../../utils/GameUtils';
 
-// TODO only allow one per day
+// TODO Show the previous days puzzles to the right
 export default class PuzzleContent extends Component {
 
   constructor(props) {

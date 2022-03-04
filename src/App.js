@@ -3,11 +3,14 @@ import './App.css';
 import HeaderSection from './components/header/HeaderSection.js';
 import {GameService, MILLISECONDS_IN_A_DAY} from './service/GameService';
 import {MODALS, PUZZLE_TYPE} from './utils/Enums';
+import {datesAreOnSameDay} from './utils/DateUtils';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faLock, faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible, faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 import PuzzleContent from './components/puzzle-content/PuzzleContent'
 
+// TODO show the bible encouragement when solved
+// TODO different encouragement for Day vs Week?
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
@@ -20,9 +23,9 @@ class App extends Component {
     this.gameService = new GameService();
     this.todays_answer = this.gameService.getTodaysAnswerObject();
     this.weeks_answer = this.gameService.getThisWeeksAnswersObject();
-    let modalShown = localStorage.getItem('modalShown');
+    let modalShown = localStorage.getItem('daily_modalShown_v1');
     this.state = {
-      modal: !!modalShown ? null : MODALS.INSTRUCTION,
+      modal: !!modalShown ? false : MODALS.INSTRUCTION,
       active_puzzle: PUZZLE_TYPE.DAILY,
       settings: {
         highContrast: false
@@ -32,28 +35,20 @@ class App extends Component {
   }
 
   componentDidMount() {
-    localStorage.setItem('modalShown', true)
+    localStorage.setItem('daily_modalShown_v1', true)
   }
 
   setLabelsForWeeklyPuzzle() {
-    const daysIntoTheWeek = this.gameService.getDaysSinceFirstDay() % 7;
-    const startDate = new Date(new Date().getTime() - daysIntoTheWeek * MILLISECONDS_IN_A_DAY);
-    const labels = []
-    for (let i = 0; i < 7; i ++) {
-      const date = new Date(startDate.getTime() + i * MILLISECONDS_IN_A_DAY);
-      labels.push(date.toLocaleString('en-us', { month: 'short', day: 'numeric' }));
-    }
-    this.labels = labels
+    this.labels = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
   }
-  
+
   restoredHistory(puzzle_type) {
     const history = JSON.parse(localStorage.getItem(puzzle_type));
     const today = this.gameService.getTodaysDate().getTime();
     if (!!history) {
-      const daysSinceLastSave = Math.floor((today - history['date']) / MILLISECONDS_IN_A_DAY)
       switch (puzzle_type) {
         case PUZZLE_TYPE.DAILY:
-          if (daysSinceLastSave === 0) {
+          if (datesAreOnSameDay(new Date(today), new Date(history['date']))) {
             return history;
           } else {
             return null
@@ -63,6 +58,7 @@ class App extends Component {
           // check was the last save date "this week"
           // TODO validate this if this works
           const daysIntoTheWeek = this.gameService.getDaysSinceFirstDay() % 7;
+          const daysSinceLastSave = Math.floor((today - history['date']) / MILLISECONDS_IN_A_DAY)
           if (daysSinceLastSave > 6 || daysIntoTheWeek < daysSinceLastSave) {
             return null
           } else {
@@ -73,6 +69,9 @@ class App extends Component {
   }
 
   openModal(modal) {
+    if (modal === MODALS.INSTRUCTION) {
+      modal = this.state.active_puzzle === PUZZLE_TYPE.DAILY ? MODALS.INSTRUCTION : MODALS.INSTRUCTION_WEEKLY;
+    }
     this.setState({
       modal: modal,
       lock: true
@@ -108,11 +107,17 @@ class App extends Component {
 
     let changeActivePuzzle = () => {
       let puzzle = this.state.active_puzzle === PUZZLE_TYPE.DAILY ? PUZZLE_TYPE.WEEKLY : PUZZLE_TYPE.DAILY;
+      let modal = false
+      let modalShown = localStorage.getItem('weekly_modalShown_v1');
+      if (!modalShown && puzzle === PUZZLE_TYPE.WEEKLY) {
+        modal = MODALS.INSTRUCTION_WEEKLY
+      }
       this.setState({
-        active_puzzle: puzzle
-      })
+        active_puzzle: puzzle,
+        modal: modal
+      });
+      localStorage.setItem('weekly_modalShown_v1', true)
     }
-// TODO freeze second-third rows
     return (
       <div className="App">
         <HeaderSection openModal={this.openModal.bind(this)} changeActivePuzzle={changeActivePuzzle}/>
@@ -121,7 +126,8 @@ class App extends Component {
         {this.state.active_puzzle === PUZZLE_TYPE.WEEKLY &&
         <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={this.labels}/>}
         <ModalContainer modal={this.state.modal} closeModal={closeModal}
-            highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}/>
+            highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}
+            answer={this.todays_answer}/>
       </div>
     );
   }

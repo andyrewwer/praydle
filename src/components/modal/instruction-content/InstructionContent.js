@@ -40,7 +40,7 @@ export default class InstructionContent extends Component {
         <div className="instructions bottom-border">
           <p> Guess the <b className="praydle-span">PRAY</b><b>DLE</b> in six attempts.</p>
           <p> Each guess must be a valid word. Hit the enter button to submit.</p>
-          <p> After each guess, the color of the tiles will change to show how close your guess was to the word</p>
+          <p> After each guess, the color of the tiles will change to show how close your guess was to the word.</p>
         </div>
         <div className="instructions bottom-border">
           <h5> Examples</h5>
@@ -67,7 +67,7 @@ export default class InstructionContent extends Component {
           <p>The letter <b>Y</b> is in not in the word in any spot.</p>
         </div>
         <div className="instructions">
-          <p className='new'> Once you've guessed the word, there will be a short <b>pray</b>er encouragement based on todays word to help us focus on God</p>
+          <p className='new'> Once you've guessed the word, there will be a short <b>pray</b>er encouragement based on todays word to help us focus on God.</p>
           <b> A new PRAYDLE will be available every day</b>
         </div>
       </div>

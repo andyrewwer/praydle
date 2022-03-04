@@ -1,5 +1,6 @@
 export const MODALS = {
   INSTRUCTION: 'instruction',
+  INSTRUCTION_WEEKLY: 'instruction-weekly',
   BIBLE: 'bible',
   SETTINGS: 'settings',
   STATISTICS: 'statistics'

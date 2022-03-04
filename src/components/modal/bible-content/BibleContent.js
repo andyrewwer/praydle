@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './BibleContent.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+// TODO add encouragement?
+// TODO hide answer until given, don't show encouragemnt until guessed
 export default class BibleContent extends Component {
 
   render () {

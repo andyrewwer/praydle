@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import {customStyles} from '../../utils/Styles.js'
 import {MODALS} from '../../utils/Enums.js'
 import InstructionContent from './instruction-content/InstructionContent'
+import WeeklyInstructionContent from './weekly-instruction-content/WeeklyInstructionContent'
 import BibleContent from './bible-content/BibleContent'
 import SettingsContent from './settings-content/SettingsContent'
 import StatisticsContent from './statistics-content/StatisticsContent'
@@ -25,6 +26,8 @@ export default class ModalContainer extends Component {
         return <SettingsContent closeModal={this.closeModal.bind(this)} highContrast={this.props.highContrast} toggleHighContrast={this.props.toggleHighContrast}/>
       case MODALS.STATISTICS:
         return <StatisticsContent />
+      case MODALS.INSTRUCTION_WEEKLY:
+        return <WeeklyInstructionContent />
     }
   }
 
