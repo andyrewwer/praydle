@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './PuzzleContent.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import BoardSection from '../board/BoardSection.js';
 import Keyboard from '../keyboard/Keyboard.js';
-import {ENTER_KEY, BACKSPACE_KEY, GameService} from '../../service/GameService';
-import {ANIMATION_TYPE, MODALS} from '../../utils/Enums';
+import {ANIMATION_TYPE} from '../../utils/Enums';
 import {PUZZLE_TYPE} from '../../utils/Enums';
 
 import {createEmptyKeyboard, handleKeyDown} from '../../utils/GameUtils';
@@ -16,25 +14,43 @@ export default class PuzzleContent extends Component {
     super(props);
     this.gameService = this.props.gameService;
     this.current_answer = this.props.answer;
-    this.state = this.createInitialState()
+    let puzzleType = this.props.puzzleType;
+    let initialState = this.createInitialState(puzzleType);
+    initialState['lockedRows'] = this.setLockedRow(puzzleType);
+    this.state = initialState;
   }
 
-  createInitialState() {
+  createInitialState(puzzleType) {
     // TODO animate dynamically?
     if (!!this.props.history) {
       return this.props.history;
     } else {
       return {
         answerLength: this.current_answer['word'].length,
-        rows:[...Array(this.getSizeForPuzzleType(this.props.puzzleType))].map(e => []),
+        rows:[...Array(this.getSizeForPuzzleType(puzzleType))].map(e => []),
         keys: createEmptyKeyboard(),
-        animations: [...Array(this.getSizeForPuzzleType(this.props.puzzleType))].map(e => ANIMATION_TYPE.IDLE),
+        animations: [...Array(this.getSizeForPuzzleType(puzzleType))].map(e => ANIMATION_TYPE.IDLE),
         current_row: 0,
         lock: false,
         gameOver: false,
       }
     }
+  }
 
+  setLockedRow(puzzleType) {
+    if (puzzleType === PUZZLE_TYPE.DAILY) {
+      return [...Array(this.getSizeForPuzzleType(this.props.puzzleType))].map(e => false);
+    } else if (puzzleType === PUZZLE_TYPE.WEEKLY) {
+      const daysIntoTheWeek = this.gameService.getDaysSinceFirstDay() % 7;
+      let lockedRow = []
+      for (let i = 0; i < daysIntoTheWeek + 1; i++) {
+        lockedRow.push(false)
+      }
+      for (let i = 0; i < 7-daysIntoTheWeek; i++) {
+        lockedRow.push(true)
+      }
+      return lockedRow;
+    }
   }
 
   getSizeForPuzzleType(puzzleType) {
@@ -60,7 +76,7 @@ export default class PuzzleContent extends Component {
 
 
   gameIsLocked() {
-    return this.state.lock || this.state.gameOver || this.props.lock
+    return this.state.lock || this.state.gameOver || this.props.lock || this.state.lockedRows[this.state.current_row]
   }
 
   removeLastItem() {
@@ -94,7 +110,7 @@ export default class PuzzleContent extends Component {
         }.bind(this), 450+(150*j));
         setTimeout(function() {
           // TODO some success
-        }.bind(this), 450+(150*this.state.answerLength)+500)
+        }, 450+(150*this.state.answerLength)+500)
       }
       this.setState({
         gameOver: true
@@ -164,7 +180,11 @@ export default class PuzzleContent extends Component {
   render () {
     return (
       <div className="flex-center puzzle-container">
-          <BoardSection rows={this.state.rows} animations={this.state.animations} answerLength={this.state.answerLength} labels={this.props.labels}/>
+          <BoardSection rows={this.state.rows}
+             animations={this.state.animations}
+             answerLength={this.state.answerLength}
+             lockedRows={this.state.lockedRows}
+             labels={this.props.labels}/>
           <Keyboard
                 keyPressCallback={this.keyPressed.bind(this)}
                 backspaceCallback={this.backspacePressed.bind(this)}

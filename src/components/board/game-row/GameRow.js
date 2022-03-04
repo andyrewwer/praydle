@@ -12,11 +12,11 @@ class GameRow extends Component {
   createGameTiles() {
     var tiles = [];
     for (let i = 0; i < this.props.answerLength; i++) {
-      tiles.push(<GameTile tile={!!this.props.row && this.props.row.length > i && this.props.row[i]} key={i}/>)
+      tiles.push(<GameTile tile={!!this.props.row && this.props.row.length > i && this.props.row[i]} lock={this.props.lock} key={i}/>)
     }
     return tiles
   }
-  
+
   render = () => {
     return (
       <div className="game-row" style={{gridTemplateColumns: "repeat(" + this.props.answerLength + ", var(--tile-size))"}} data-animation={this.props.animation}>

@@ -11,6 +11,10 @@
 
 }
 
+.lock {
+  background-color: var(--color-locked);
+}
+
 .tile[data-state='absent'] {
   background-color: var(--color-absent);
   border: 0;

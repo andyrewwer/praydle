@@ -16,14 +16,14 @@ class BoardSection extends Component {
         row.push(
           <React.Fragment key={i}>
             <div className="gameRowLabel flex-center">{this.props.labels[i]}</div>
-            <GameRow row={this.props.rows[i]} animation={this.props.animations[i]} answerLength={this.props.answerLength}/>
+            <GameRow row={this.props.rows[i]} animation={this.props.animations[i]} lock={this.props.lockedRows[i]} answerLength={this.props.answerLength}/>
           </React.Fragment>)
       }
     }
     else {
       for (let i = 0; i < this.props.rows.length; i++) {
         row.push(
-          <GameRow key={i} row={this.props.rows[i]} animation={this.props.animations[i]} answerLength={this.props.answerLength}/>
+          <GameRow key={i} row={this.props.rows[i]} animation={this.props.animations[i]} lock={this.props.lockedRows[i]} answerLength={this.props.answerLength}/>
         )
       }
     }

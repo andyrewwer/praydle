@@ -4,7 +4,7 @@ import HeaderSection from './components/header/HeaderSection.js';
 import {GameService, MILLISECONDS_IN_A_DAY} from './service/GameService';
 import {MODALS, PUZZLE_TYPE} from './utils/Enums';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible, faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
+import { faLock, faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible, faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 import PuzzleContent from './components/puzzle-content/PuzzleContent'
 
@@ -12,7 +12,7 @@ class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
   header_icons = [faCog, faQuestionCircle, faChartBar, faBible, faCalendarAlt]
-  modal_icons = [faTimes]
+  modal_icons = [faTimes, faLock]
 
   constructor() {
     super();
@@ -28,12 +28,24 @@ class App extends Component {
         highContrast: false
       }
     }
+    this.setLabelsForWeeklyPuzzle()
   }
 
   componentDidMount() {
     localStorage.setItem('modalShown', true)
   }
 
+  setLabelsForWeeklyPuzzle() {
+    const daysIntoTheWeek = this.gameService.getDaysSinceFirstDay() % 7;
+    const startDate = new Date(new Date().getTime() - daysIntoTheWeek * MILLISECONDS_IN_A_DAY);
+    const labels = []
+    for (let i = 0; i < 7; i ++) {
+      const date = new Date(startDate.getTime() + i * MILLISECONDS_IN_A_DAY);
+      labels.push(date.toLocaleString('en-us', { month: 'short', day: 'numeric' }));
+    }
+    this.labels = labels
+  }
+  
   restoredHistory(puzzle_type) {
     const history = JSON.parse(localStorage.getItem(puzzle_type));
     const today = this.gameService.getTodaysDate().getTime();
@@ -107,7 +119,7 @@ class App extends Component {
         {this.state.active_puzzle === PUZZLE_TYPE.DAILY &&
         <PuzzleContent gameService={this.gameService} answer={this.todays_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.DAILY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.DAILY)}/>}
         {this.state.active_puzzle === PUZZLE_TYPE.WEEKLY &&
-        <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={['3/28', '3/29', '3/30', '3/31', '4/1', '4/2', '4/3']}/>}
+        <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={this.labels}/>}
         <ModalContainer modal={this.state.modal} closeModal={closeModal}
             highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}/>
       </div>
