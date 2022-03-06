@@ -8,6 +8,7 @@ import {PUZZLE_TYPE} from '../../utils/Enums';
 import {createEmptyKeyboard, handleKeyDown} from '../../utils/GameUtils';
 
 // TODO Show the previous days puzzles to the right
+// TODO Maybe lock the days you didn't do?
 export default class PuzzleContent extends Component {
 
   constructor(props) {

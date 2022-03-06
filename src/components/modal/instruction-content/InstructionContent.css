@@ -22,25 +22,6 @@
   margin-top: var(--size-5)
 }
 
-.ReactModal__Overlay {
-    opacity: 0;
-    transform: translateY(400px);
-    transition: all 400ms ease-in-out;
-
-}
-
-.ReactModal__Overlay--after-open{
-    opacity: 1;
-    transform: translateY(0px);
-}
-
-.ReactModal__Overlay--before-close{
-    opacity: 0;
-    transform: translateY(400px);
-
-
-}
-
 .praydle-span {
   color: var(--color-title);
   font-size: 0.975rem;

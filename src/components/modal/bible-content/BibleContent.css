@@ -25,3 +25,16 @@
 .bible-verse {
   width: 80%;
 }
+
+.fuzzy {
+  color: transparent;
+  text-shadow: rgba(0, 0, 0, 0.6) 0px 0px 10px;
+  user-select: none;
+}
+
+.hint {
+  font-size: var(--font-size-0);
+  color: var(--gray-5);
+  font-style: italic;
+  margin: 0 auto;
+}

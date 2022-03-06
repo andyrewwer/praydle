@@ -10,7 +10,6 @@ export const MILLISECONDS_IN_A_DAY = 24*60*60*1000
 // TODO add more answers to answers.json
 // TODO themes of the various weeks?
 // TODO handle when the week is empty.
-
 class GameService {
 
   skip_days = 0;
@@ -129,6 +128,15 @@ class GameService {
   addItemToRow(list, _current_row, letter) {
     list[_current_row] = list[_current_row].concat(new Tile(letter))
     return {rows: list}
+  }
+
+  getPreviousAnswersForThisWeek() {
+    let list = [];
+    for (let i = 0; i < (this.getDaysSinceFirstDay() + 1) % 7; i++) {
+      list.push(this.getThisWeeksAnswersObject()['week'][i]['word'])
+    }
+
+    return list
   }
 }
 

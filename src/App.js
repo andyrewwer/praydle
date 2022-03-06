@@ -8,9 +8,11 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faLock, faBackspace, faCheckCircle, faCog, faQuestionCircle, faChartBar, faTimes, faBible, faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import ModalContainer from './components/modal/ModalContainer'
 import PuzzleContent from './components/puzzle-content/PuzzleContent'
+import PreviousAnswer from './components/previous-answer-section/PreviousAnswer'
 
 // TODO show the bible encouragement when solved
 // TODO different encouragement for Day vs Week?
+// TODO bug where if person enters last guess wrong should make "gameOver = true"
 class App extends Component {
 
   confirmation_icons = [faBackspace, faCheckCircle]
@@ -27,19 +29,20 @@ class App extends Component {
     this.state = {
       modal: !!modalShown ? false : MODALS.INSTRUCTION,
       active_puzzle: PUZZLE_TYPE.DAILY,
+      lock: !modalShown,
       settings: {
         highContrast: false
-      }
+      },
+      puzzleSolved: false
     }
-    this.setLabelsForWeeklyPuzzle()
   }
 
   componentDidMount() {
     localStorage.setItem('daily_modalShown_v1', true)
   }
 
-  setLabelsForWeeklyPuzzle() {
-    this.labels = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
+  getLabelsForWeeklyPuzzle() {
+    return ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
   }
 
   restoredHistory(puzzle_type) {
@@ -56,7 +59,6 @@ class App extends Component {
         case PUZZLE_TYPE.WEEKLY:
           // check how many days since the week started
           // check was the last save date "this week"
-          // TODO validate this if this works
           const daysIntoTheWeek = this.gameService.getDaysSinceFirstDay() % 7;
           const daysSinceLastSave = Math.floor((today - history['date']) / MILLISECONDS_IN_A_DAY)
           if (daysSinceLastSave > 6 || daysIntoTheWeek < daysSinceLastSave) {
@@ -96,6 +98,11 @@ class App extends Component {
     localStorage.setItem(type, JSON.stringify(state));
   }
 
+  puzzleTypeIsSolved(puzzleType) {
+    const history = this.restoredHistory(puzzleType);
+    return !!history && !!history['gameOver']
+  }
+
   render = () => {
     library.add(this.confirmation_icons, this.header_icons, this.modal_icons);
     let closeModal = () => {
@@ -121,13 +128,19 @@ class App extends Component {
     return (
       <div className="App">
         <HeaderSection openModal={this.openModal.bind(this)} changeActivePuzzle={changeActivePuzzle}/>
+
         {this.state.active_puzzle === PUZZLE_TYPE.DAILY &&
         <PuzzleContent gameService={this.gameService} answer={this.todays_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.DAILY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.DAILY)}/>}
+
         {this.state.active_puzzle === PUZZLE_TYPE.WEEKLY &&
-        <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={this.labels}/>}
+        <>
+          <PreviousAnswer answers={this.gameService.getPreviousAnswersForThisWeek()}/>
+          <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={this.getLabelsForWeeklyPuzzle()}/>
+        </>}
+
         <ModalContainer modal={this.state.modal} closeModal={closeModal}
             highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}
-            answer={this.todays_answer}/>
+            answer={this.todays_answer} puzzleNumber={this.gameService.getDaysSinceFirstDay()} puzzleIsSolved={this.puzzleTypeIsSolved(this.state.active_puzzle)}/>
       </div>
     );
   }

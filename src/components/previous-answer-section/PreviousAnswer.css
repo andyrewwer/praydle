@@ -1,0 +1,12 @@
+.previous-game-row {
+  display: grid;
+  grid-column-gap: 5px;
+  grid-template-rows: calc(var(--tile-size) * 0.6);
+  justify-content: center;
+  margin-top: var(--size-1);
+  --font-size-tile: 18px;
+}
+
+.previous-game-container {
+  padding: 10px 0px;
+}
