@@ -25,7 +25,6 @@ export default class PuzzleContent extends Component {
     // TODO change entry animation maybe?
     const rows = state.rows;
     for (let i = 0; i < rows.length; i++) {
-      console.log('rows', rows[i].length)
       for (let j = 0; j < rows[i].length; j++) {
         this.animateAndSetItem(rows[i], j, i);
       }
@@ -104,7 +103,6 @@ export default class PuzzleContent extends Component {
 
   animateAndSetItem(row, i, _current_row) {
     const list = this.state.rows;
-    console.log('test')
     setTimeout(function() {
       this.setState(this.gameService.startFlipAnimation(list, row, i, _current_row));
       setTimeout(function() {
@@ -116,6 +114,15 @@ export default class PuzzleContent extends Component {
     }.bind(this), 500*i);
   }
 
+  endGame() {
+    this.setState({
+      gameOver: true
+    }, (() => {
+      this.props.saveState(this.props.puzzleType, this.state);
+      this.props.endGame(this.props.puzzleType);
+    }));
+  }
+
   handleRowFinishedAnimating(list, row, i, _current_row) {
     if (this.gameService.rowIsCorrect(row)) {
       for (let j = 0; j < this.state.answerLength; j ++) {
@@ -123,22 +130,22 @@ export default class PuzzleContent extends Component {
           this.setState(this.gameService.performBounceAnimation(list, row, j, _current_row));
         }.bind(this), 450+(150*j));
         setTimeout(function() {
-          // TODO some success
-        }, 450+(150*this.state.answerLength)+500)
+          list[_current_row] = this.gameService.resetStatus(row)
+          this.endGame();
+        }.bind(this), 450+(150*this.state.answerLength)+900)
       }
-      this.setState({
-        gameOver: true
-      });
     } else if (this.state.current_row === this.getSizeForPuzzleType(this.props.puzzleType)) {
+      // TODO some delay and show the right answer
+      this.endGame();
+    } else {
       this.setState({
-        gameOver: true
+        lock: false
       });
     }
     const _keys = this.state.keys
     this.gameService.updateKeys(row, _keys);
     list[_current_row] = this.gameService.resetStatus(row)
     this.setState({
-      lock: false,
       keys: _keys,
       rows: list
     }, (() => {

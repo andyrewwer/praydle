@@ -103,6 +103,29 @@ class App extends Component {
     return !!history && !!history['gameOver']
   }
 
+  changeActivePuzzle () {
+    let puzzle = this.state.active_puzzle === PUZZLE_TYPE.DAILY ? PUZZLE_TYPE.WEEKLY : PUZZLE_TYPE.DAILY;
+    let modal = false
+    let modalShown = localStorage.getItem('weekly_modalShown_v1');
+    if (!modalShown && puzzle === PUZZLE_TYPE.WEEKLY) {
+      modal = MODALS.INSTRUCTION_WEEKLY
+    }
+    this.setState({
+      active_puzzle: puzzle,
+      modal: modal
+    });
+    localStorage.setItem('weekly_modalShown_v1', true)
+  }
+
+  endGame() {
+    this.openModal(MODALS.BIBLE)
+  }
+
+  getPuzzleNumber() {
+    return this.state.active_puzzle === PUZZLE_TYPE.DAILY ?
+      'Day ' + (this.gameService.getDaysSinceFirstDay()+1) :
+      'Week ' + (this.gameService.getDaysSinceFirstDay()%7+1)
+  }
   render = () => {
     library.add(this.confirmation_icons, this.header_icons, this.modal_icons);
     let closeModal = () => {
@@ -112,35 +135,25 @@ class App extends Component {
       })
     }
 
-    let changeActivePuzzle = () => {
-      let puzzle = this.state.active_puzzle === PUZZLE_TYPE.DAILY ? PUZZLE_TYPE.WEEKLY : PUZZLE_TYPE.DAILY;
-      let modal = false
-      let modalShown = localStorage.getItem('weekly_modalShown_v1');
-      if (!modalShown && puzzle === PUZZLE_TYPE.WEEKLY) {
-        modal = MODALS.INSTRUCTION_WEEKLY
-      }
-      this.setState({
-        active_puzzle: puzzle,
-        modal: modal
-      });
-      localStorage.setItem('weekly_modalShown_v1', true)
-    }
     return (
       <div className="App">
-        <HeaderSection openModal={this.openModal.bind(this)} changeActivePuzzle={changeActivePuzzle}/>
+        <HeaderSection openModal={this.openModal.bind(this)} changeActivePuzzle={this.changeActivePuzzle.bind(this)}/>
 
         {this.state.active_puzzle === PUZZLE_TYPE.DAILY &&
-        <PuzzleContent gameService={this.gameService} answer={this.todays_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.DAILY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.DAILY)}/>}
+        <PuzzleContent gameService={this.gameService} answer={this.todays_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.DAILY} saveState={this.saveState} endGame={this.endGame.bind(this)} history={this.restoredHistory(PUZZLE_TYPE.DAILY)}/>}
 
         {this.state.active_puzzle === PUZZLE_TYPE.WEEKLY &&
         <>
           <PreviousAnswer answers={this.gameService.getPreviousAnswersForThisWeek()} todaysPuzzleIsSolved={this.puzzleTypeIsSolved(PUZZLE_TYPE.DAILY)}/>
-          <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={this.getLabelsForWeeklyPuzzle()}/>
+          <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} endGame={this.endGame.bind(this)} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={this.getLabelsForWeeklyPuzzle()}/>
         </>}
 
         <ModalContainer modal={this.state.modal} closeModal={closeModal}
             highContrast={this.state.settings.highContrast} toggleHighContrast={this.toggleHighContrast.bind(this)}
-            answer={this.todays_answer} puzzleNumber={this.gameService.getDaysSinceFirstDay()} puzzleIsSolved={this.puzzleTypeIsSolved(this.state.active_puzzle)}/>
+            answer={this.state.active_puzzle === PUZZLE_TYPE.DAILY ? this.todays_answer : this.weeks_answer}
+            puzzleNumber={this.getPuzzleNumber()} puzzleIsSolved={this.puzzleTypeIsSolved(this.state.active_puzzle)}
+            openStatisticsCallback={() => this.openModal(MODALS.STATISTICS)}
+            openWeeklyPuzzle={this.changeActivePuzzle.bind(this)}/>
       </div>
     );
   }

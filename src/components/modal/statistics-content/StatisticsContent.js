@@ -28,6 +28,10 @@ export default class StatisticsContent extends Component {
           </div>
         </div>
         <h4 className="modal-title" style={{textAlign: "center", marginTop: "20px"}}> GUESS DISTRIBUTION </h4>
+        <div className="flex-row justify-center">
+          <button onClick={this.props.openWeeklyPuzzle}>Weekly Puzzle</button>
+        </div>
+
       </div>
     </>
     )
