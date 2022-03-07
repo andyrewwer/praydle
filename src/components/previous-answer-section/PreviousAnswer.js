@@ -24,7 +24,9 @@ export default class PreviousAnswer extends Component {
   createAnswerRows() {
     let rows = []
     for (let i = 0; i < this.props.answers.length; i++) {
-      rows.push(this.createAnswerRow(this.props.answers[i]));
+      if (i+1 < this.props.answers.length || this.props.todaysPuzzleIsSolved) {
+        rows.push(this.createAnswerRow(this.props.answers[i]));
+      }
     }
     return rows;
   }

@@ -5,7 +5,7 @@ import answers from '../assets/answers.json'
 
 export const ENTER_KEY = 13;
 export const BACKSPACE_KEY = 8;
-export const FIRST_DATE = new Date('Feb 27, 2022');
+export const FIRST_DATE = new Date('March 6, 2022');
 export const MILLISECONDS_IN_A_DAY = 24*60*60*1000
 // TODO add more answers to answers.json
 // TODO themes of the various weeks?
@@ -112,6 +112,13 @@ class GameService {
       }
     }
     return true
+  }
+
+  resetStatus(row) {
+    for (let i = 0; i < row.length; i++) {
+      row[i].animation = ANIMATION_TYPE.IDLE;
+    }
+    return row;
   }
 
   performBounceAnimation(list, row, j, current_row) {

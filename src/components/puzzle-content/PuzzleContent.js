@@ -7,7 +7,6 @@ import {PUZZLE_TYPE} from '../../utils/Enums';
 
 import {createEmptyKeyboard, handleKeyDown} from '../../utils/GameUtils';
 
-// TODO Show the previous days puzzles to the right
 // TODO Maybe lock the days you didn't do?
 export default class PuzzleContent extends Component {
 
@@ -19,6 +18,18 @@ export default class PuzzleContent extends Component {
     let initialState = this.createInitialState(puzzleType);
     initialState['lockedRows'] = this.setLockedRow(puzzleType);
     this.state = initialState;
+    this.animateTileEntry(this.state)
+  }
+
+  animateTileEntry(state) {
+    // TODO change entry animation maybe?
+    const rows = state.rows;
+    for (let i = 0; i < rows.length; i++) {
+      console.log('rows', rows[i].length)
+      for (let j = 0; j < rows[i].length; j++) {
+        this.animateAndSetItem(rows[i], j, i);
+      }
+    }
   }
 
   createInitialState(puzzleType) {
@@ -91,7 +102,9 @@ export default class PuzzleContent extends Component {
     return this.gameService.rowIsComplete(this.state.rows[this.state.current_row], this.current_answer['word']) && this.gameService.wordIsValid(this.state.rows[this.state.current_row]);
   }
 
-  animateAndSetItem(list, row, i, _current_row) {
+  animateAndSetItem(row, i, _current_row) {
+    const list = this.state.rows;
+    console.log('test')
     setTimeout(function() {
       this.setState(this.gameService.startFlipAnimation(list, row, i, _current_row));
       setTimeout(function() {
@@ -116,15 +129,18 @@ export default class PuzzleContent extends Component {
       this.setState({
         gameOver: true
       });
-    } else {
+    } else if (this.state.current_row === this.getSizeForPuzzleType(this.props.puzzleType)) {
       this.setState({
-        lock: false,
+        gameOver: true
       });
     }
     const _keys = this.state.keys
     this.gameService.updateKeys(row, _keys);
+    list[_current_row] = this.gameService.resetStatus(row)
     this.setState({
-      keys: _keys
+      lock: false,
+      keys: _keys,
+      rows: list
     }, (() => {
       this.props.saveState(this.props.puzzleType, this.state);
     }));
@@ -140,7 +156,7 @@ export default class PuzzleContent extends Component {
       const row = _rows[_current_row];
       this.gameService.checkRowValidity(row, this.current_answer['word']);
       for (let i = 0; i < row.length; i ++) {
-        this.animateAndSetItem(_rows, row, i, _current_row);
+        this.animateAndSetItem(row, i, _current_row);
       }
       return this.setState({
         current_row: _current_row + 1,

@@ -9,11 +9,11 @@
   margin: 0px 10px;
 }
 
-.title {
+.header-title {
   font-weight: 750;
   font-size: 1.8rem;
 }
 
-.title-color-span { 
+.title-color-span {
   color: var(--color-title);
 }

@@ -134,7 +134,7 @@ class App extends Component {
 
         {this.state.active_puzzle === PUZZLE_TYPE.WEEKLY &&
         <>
-          <PreviousAnswer answers={this.gameService.getPreviousAnswersForThisWeek()}/>
+          <PreviousAnswer answers={this.gameService.getPreviousAnswersForThisWeek()} todaysPuzzleIsSolved={this.puzzleTypeIsSolved(PUZZLE_TYPE.DAILY)}/>
           <PuzzleContent gameService={this.gameService} answer={this.weeks_answer} lock={this.state.lock} puzzleType={PUZZLE_TYPE.WEEKLY} saveState={this.saveState} history={this.restoredHistory(PUZZLE_TYPE.WEEKLY)} labels={this.getLabelsForWeeklyPuzzle()}/>
         </>}
 
