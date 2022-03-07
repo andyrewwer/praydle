@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/praydle/static/css/main.0fb61ddf.css",
-    "main.js": "/praydle/static/js/main.6e8fd7ae.js",
+    "main.css": "/praydle/static/css/main.19ec7949.css",
+    "main.js": "/praydle/static/js/main.19f2b4c3.js",
     "static/js/787.670329ff.chunk.js": "/praydle/static/js/787.670329ff.chunk.js",
     "index.html": "/praydle/index.html",
-    "main.0fb61ddf.css.map": "/praydle/static/css/main.0fb61ddf.css.map",
-    "main.6e8fd7ae.js.map": "/praydle/static/js/main.6e8fd7ae.js.map",
+    "main.19ec7949.css.map": "/praydle/static/css/main.19ec7949.css.map",
+    "main.19f2b4c3.js.map": "/praydle/static/js/main.19f2b4c3.js.map",
     "787.670329ff.chunk.js.map": "/praydle/static/js/787.670329ff.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0fb61ddf.css",
-    "static/js/main.6e8fd7ae.js"
+    "static/css/main.19ec7949.css",
+    "static/js/main.19f2b4c3.js"
   ]
 }
