@@ -46,6 +46,10 @@ code {
   align-items: center;
 }
 
+.bottom-border {
+  border-bottom: 1px solid var(--gray-4);
+}
+
 /* TODO modals should scroll down more on mobile (e.g. instruction mobile) */
 /* TODO spacing between elements to look better instead of static */
 @media screen and (max-width: 475px)  {

@@ -7,6 +7,7 @@ import Toggle from 'react-toggle'
 // TODO more settings -- nightmode, hardmode, ???
 // TODO more formal email
 // TODO custom domain
+// TODO persist changes in localStorage
 export default class SettingsContent extends Component {
 
   render () {

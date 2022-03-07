@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './PreviousAnswer.css';
-import {ANSWER_TYPE} from '../../utils/Enums';
 import {Tile} from '../../model/Tile';
 import GameTile from '../board/game-row/game-tile/GameTile'
 

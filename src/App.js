@@ -66,6 +66,9 @@ class App extends Component {
           } else {
             return history
           }
+        default:
+        // TODO throw error? 
+          return null
       }
     }
   }

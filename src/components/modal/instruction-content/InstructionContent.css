@@ -6,9 +6,6 @@
   letter-spacing: var(--font-letterspacing-0);
 }
 
-.bottom-border {
-  border-bottom: 1px solid var(--gray-4);
-}
 .instructions h5 {
   font-size: 1.1rem;
   margin: var(--size-fluid-2) 0;

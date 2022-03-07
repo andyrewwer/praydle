@@ -29,6 +29,9 @@ export default class ModalContainer extends Component {
         return <StatisticsContent openWeeklyPuzzle={this.props.openWeeklyPuzzle}/>
       case MODALS.INSTRUCTION_WEEKLY:
         return <WeeklyInstructionContent />
+      default:
+      // TODO default error modalShown
+        return ''
     }
   }
 
